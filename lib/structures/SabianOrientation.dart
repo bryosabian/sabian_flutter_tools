@@ -1,0 +1,1 @@
+enum SabianOrientation { HORIZONTAL, VERTICAL }
