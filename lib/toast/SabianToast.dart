@@ -5,26 +5,28 @@ import 'package:sabian_tools/toast/SabianToastAnim.dart';
 import 'package:sabian_tools/toast/SabianToastPosition.dart';
 import 'package:sabian_tools/toast/SabianToastType.dart';
 
+typedef SabianToastAction = Function(SabianToast);
+
 class SabianToast {
   final String text;
   final IconData? icon;
   final SabianToastType type;
   final Widget? actionText;
-  final Function(SabianToast)? action;
+  final SabianToastAction? action;
   final Duration? duration;
   final SabianToastAnim animation;
   final SabianToastPosition position;
   final EdgeInsets? horizontalSpace;
   final BorderRadius? boxRadius;
   final Size? actionSize;
+  final bool? dismissOtherToast;
 
   ToastFuture? _lastToast;
+
   bool _isShowing = false;
 
-  SabianToast(
-      {required this.text,
-      this.icon,
-      required this.type,
+  SabianToast(this.text, this.type,
+      {this.icon,
       this.actionText,
       this.action,
       this.duration,
@@ -32,7 +34,66 @@ class SabianToast {
       this.position = SabianToastPosition.top,
       this.horizontalSpace = const EdgeInsets.only(left: 0, right: 0),
       this.boxRadius = BorderRadius.zero,
-      this.actionSize = const Size(0, 20)});
+      this.actionSize = const Size(0, 20),
+      this.dismissOtherToast});
+
+  factory SabianToast.withTextAction(String text, SabianToastType type,
+      {required String actionText,
+      SabianToastAction? action,
+      IconData? icon,
+      Duration? duration,
+      SabianToastAnim animation = SabianToastAnim.fade,
+      SabianToastPosition position = SabianToastPosition.top,
+      EdgeInsets horizontalSpace = const EdgeInsets.only(left: 0, right: 0),
+      BorderRadius boxRadius = BorderRadius.zero,
+      Size actionSize = const Size(0, 20),
+      Color? actionTextColor,
+      bool? dismissOtherToast}) {
+    return SabianToast(text, type,
+        icon: icon,
+        action: action,
+        duration: duration,
+        animation: animation,
+        position: position,
+        horizontalSpace: horizontalSpace,
+        boxRadius: boxRadius,
+        actionSize: actionSize,
+        dismissOtherToast: dismissOtherToast,
+        actionText: SabianRobotoText(
+          actionText,
+          fontSize: 14,
+          textColor: actionTextColor,
+        ));
+  }
+
+  factory SabianToast.withIconAction(String text, SabianToastType type,
+      {required IconData actionIcon,
+      SabianToastAction? action,
+      IconData? icon,
+      Duration? duration,
+      SabianToastAnim animation = SabianToastAnim.fade,
+      SabianToastPosition position = SabianToastPosition.top,
+      EdgeInsets horizontalSpace = const EdgeInsets.only(left: 0, right: 0),
+      BorderRadius boxRadius = BorderRadius.zero,
+      Size actionSize = const Size(0, 20),
+      bool? dismissOtherToast,
+      Color? actionIconColor}) {
+    return SabianToast(text, type,
+        icon: icon,
+        action: action,
+        duration: duration,
+        animation: animation,
+        position: position,
+        horizontalSpace: horizontalSpace,
+        boxRadius: boxRadius,
+        actionSize: actionSize,
+        dismissOtherToast: dismissOtherToast,
+        actionText: Icon(
+          actionIcon,
+          color: actionIconColor,
+          size: actionSize.height,
+        ));
+  }
 
   void show(BuildContext context) {
     if (_isShowing || (_lastToast != null && _lastToast!.isShow)) {
@@ -46,6 +107,7 @@ class SabianToast {
       animation: animation.animation,
       reverseAnimation: animation.animation,
       position: position.position,
+      dismissOtherToast: dismissOtherToast
     );
 
     _isShowing = _lastToast!.isShow;
@@ -93,10 +155,10 @@ class _SabianToastWidget extends StatelessWidget {
 
     double? actionWidth = _toast.actionSize?.width;
     double? actionHeight = _toast.actionSize?.height;
-    if(actionWidth != null && actionWidth <= 0){
+    if (actionWidth != null && actionWidth <= 0) {
       actionWidth = null;
     }
-    if(actionHeight != null && actionHeight <= 0){
+    if (actionHeight != null && actionHeight <= 0) {
       actionHeight = null;
     }
 
