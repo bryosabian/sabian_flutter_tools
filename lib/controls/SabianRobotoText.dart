@@ -6,6 +6,8 @@ class SabianRobotoText extends StatelessWidget {
   final Color? textColor;
   final double? fontSize;
   final FontWeight? fontWeight;
+
+  /// The type without Roboto- prefix
   final String type;
   final TextOverflow? overflow;
   final TextAlign? align;
@@ -15,10 +17,11 @@ class SabianRobotoText extends StatelessWidget {
       this.textColor,
       this.fontSize,
       this.fontWeight,
+
+      /// The type without Roboto- prefix
       this.type = "Regular",
       this.overflow,
-      this.align
-      })
+      this.align})
       : super(key: key);
 
   @override
@@ -27,14 +30,14 @@ class SabianRobotoText extends StatelessWidget {
       text,
       textAlign: align,
       style: TextStyle(
-          overflow: overflow,
-          decoration: TextDecoration.none,
-          color: textColor,
-          backgroundColor: null,
-          fontFamily: "Roboto%s".format([type]),
-          fontSize: fontSize,
-          fontWeight: fontWeight,
-          package: "sabian_tools",
+        overflow: overflow,
+        decoration: TextDecoration.none,
+        color: textColor,
+        backgroundColor: null,
+        fontFamily: "Roboto%s".format([type]),
+        fontSize: fontSize,
+        fontWeight: fontWeight,
+        package: "sabian_tools",
       ),
     );
   }
