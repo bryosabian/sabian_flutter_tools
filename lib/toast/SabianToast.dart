@@ -11,9 +11,9 @@ class SabianToast {
   final String text;
   final IconData? icon;
   final SabianToastType type;
-  final Widget? actionText;
-  final SabianToastAction? action;
-  final Duration? duration;
+  Widget? actionText;
+  SabianToastAction? action;
+  Duration? duration;
   final SabianToastAnim animation;
   final SabianToastPosition position;
   final EdgeInsets? horizontalSpace;

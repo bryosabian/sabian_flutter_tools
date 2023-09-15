@@ -80,19 +80,35 @@ class SabianModal extends AbstractSabianModal {
         customTransition: customTransition);
   }
 
-  void update({String? title, String? message, bool notifyWhenChanged = true}) {
-    this.title = title ?? this.title;
-    this.message = message ?? this.message;
-    if (notifyWhenChanged) {
-      bool can = [title, message]
-          .any((element) => element != null && !element.isBlankOrEmpty);
-      if (!can) {
-        return;
+  bool update({String? title, String? message, bool notifyWhenChanged = true}) {
+
+    bool can = [title, message]
+        .any((element) => element != null && !element.isBlankOrEmpty);
+
+    if (!can) {
+      return false;
+    }
+
+    if (can) {
+      can = this.title != title;
+    }
+
+    if (!can) {
+      can = this.message != message;
+    }
+
+    if (can) {
+
+      this.title = title ?? this.title;
+
+      this.message = message ?? this.message;
+
+      if (notifyWhenChanged) {
+        notifyChanged();
       }
     }
-    if (notifyWhenChanged) {
-      notifyChanged();
-    }
+
+    return can;
   }
 }
 

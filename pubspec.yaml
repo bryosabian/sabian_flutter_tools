@@ -1,7 +1,7 @@
 name: sabian_tools
-description: Sabian Tools Library
+description: Sabian Flutter Tools Library
 version: 0.0.1
-homepage:
+homepage: https://github.com/bryosabian/sabian_flutter_tools
 
 environment:
   sdk: ">=2.17.0 <3.0.0"

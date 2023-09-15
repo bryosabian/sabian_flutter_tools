@@ -18,7 +18,7 @@ class SabianListModal extends SabianModal {
   final String? transition;
 
   @override
-  final String? title;
+  String? title;
 
   @override
   final bool? isDismissible;
@@ -26,14 +26,15 @@ class SabianListModal extends SabianModal {
   @override
   final bool? isDismissibleOnTouch;
 
-  final String? hint;
-  final OnListModalItemSelectedCallBack? onSelected;
-  final bool? hideOnSelected;
-  final IconData? searchIcon;
-  final bool? allowSearch;
+  String? hint;
+  OnListModalItemSelectedCallBack? onSelected;
+  bool? hideOnSelected;
+  IconData? searchIcon;
+  bool? allowSearch;
+
   final List<ListModalItem> items;
 
-  final int? differentThreadThreshold;
+  int? differentThreadThreshold;
 
   SabianListModal(
       {this.key,
@@ -71,6 +72,22 @@ class SabianListModal extends SabianModal {
       this.isDismissibleOnTouch = true,
       this.transition = 'fade',
       this.differentThreadThreshold = 50});
+
+  bool updateList(
+      {String? title,
+      String? message,
+      String? hint,
+      bool notifyWhenChanged = true}) {
+    bool can = hint != null && hint.isNotBlankOrEmpty && hint != this.hint;
+    if (can) {
+      this.hint = hint;
+      final updated = super.update(title: title, message: message);
+      if (!updated && notifyWhenChanged) {
+        notifyChanged();
+      }
+    }
+    return can;
+  }
 
   @override
   Widget build(BuildContext context) {
