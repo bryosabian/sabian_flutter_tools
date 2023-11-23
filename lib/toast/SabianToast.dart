@@ -27,28 +27,28 @@ class SabianToast {
 
   SabianToast(this.text, this.type,
       {this.icon,
-      this.actionText,
-      this.action,
-      this.duration,
-      this.animation = SabianToastAnim.fade,
-      this.position = SabianToastPosition.top,
-      this.horizontalSpace = const EdgeInsets.only(left: 0, right: 0),
-      this.boxRadius = BorderRadius.zero,
-      this.actionSize = const Size(0, 20),
-      this.dismissOtherToast});
+        this.actionText,
+        this.action,
+        this.duration,
+        this.animation = SabianToastAnim.fade,
+        this.position = SabianToastPosition.top,
+        this.horizontalSpace = const EdgeInsets.only(left: 0, right: 0),
+        this.boxRadius = BorderRadius.zero,
+        this.actionSize = const Size(0, 20),
+        this.dismissOtherToast});
 
   factory SabianToast.withTextAction(String text, SabianToastType type,
       {required String actionText,
-      SabianToastAction? action,
-      IconData? icon,
-      Duration? duration,
-      SabianToastAnim animation = SabianToastAnim.fade,
-      SabianToastPosition position = SabianToastPosition.top,
-      EdgeInsets horizontalSpace = const EdgeInsets.only(left: 0, right: 0),
-      BorderRadius boxRadius = BorderRadius.zero,
-      Size actionSize = const Size(0, 20),
-      Color? actionTextColor,
-      bool? dismissOtherToast}) {
+        SabianToastAction? action,
+        IconData? icon,
+        Duration? duration,
+        SabianToastAnim animation = SabianToastAnim.fade,
+        SabianToastPosition position = SabianToastPosition.top,
+        EdgeInsets horizontalSpace = const EdgeInsets.only(left: 0, right: 0),
+        BorderRadius boxRadius = BorderRadius.zero,
+        Size actionSize = const Size(0, 20),
+        Color? actionTextColor,
+        bool? dismissOtherToast}) {
     return SabianToast(text, type,
         icon: icon,
         action: action,
@@ -68,16 +68,16 @@ class SabianToast {
 
   factory SabianToast.withIconAction(String text, SabianToastType type,
       {required IconData actionIcon,
-      SabianToastAction? action,
-      IconData? icon,
-      Duration? duration,
-      SabianToastAnim animation = SabianToastAnim.fade,
-      SabianToastPosition position = SabianToastPosition.top,
-      EdgeInsets horizontalSpace = const EdgeInsets.only(left: 0, right: 0),
-      BorderRadius boxRadius = BorderRadius.zero,
-      Size actionSize = const Size(0, 20),
-      bool? dismissOtherToast,
-      Color? actionIconColor}) {
+        SabianToastAction? action,
+        IconData? icon,
+        Duration? duration,
+        SabianToastAnim animation = SabianToastAnim.fade,
+        SabianToastPosition position = SabianToastPosition.top,
+        EdgeInsets horizontalSpace = const EdgeInsets.symmetric(horizontal: 0),
+        BorderRadius boxRadius = BorderRadius.zero,
+        Size actionSize = const Size(0, 20),
+        bool? dismissOtherToast,
+        Color? actionIconColor}) {
     return SabianToast(text, type,
         icon: icon,
         action: action,
@@ -100,14 +100,14 @@ class SabianToast {
       return;
     }
     _lastToast = showToastWidget(
-      _SabianToastWidget(this),
-      context: context,
-      isIgnoring: false,
-      duration: duration,
-      animation: animation.animation,
-      reverseAnimation: animation.animation,
-      position: position.position,
-      dismissOtherToast: dismissOtherToast
+        _SabianToastWidget(this),
+        context: context,
+        isIgnoring: false,
+        duration: duration,
+        animation: animation.animation,
+        reverseAnimation: animation.animation,
+        position: position.position,
+        dismissOtherToast: dismissOtherToast
     );
 
     _isShowing = _lastToast!.isShow;
@@ -134,8 +134,11 @@ class _SabianToastWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textColor = _toast.type.getTextColor(context);
+
     final bgColor = _toast.type.getBackgroundColor(context);
+
     final List<Widget> bodyChildren = [];
+
     if (_toast.icon != null) {
       bodyChildren.add(Icon(
         _toast.icon,
@@ -143,15 +146,26 @@ class _SabianToastWidget extends StatelessWidget {
         color: textColor,
       ));
     }
-    bodyChildren.add(Container(
-        margin: const EdgeInsets.only(left: 5),
-        child: SabianRobotoText(
-          _toast.text,
-          type: "Regular",
-          fontSize: _FONT_SIZE,
-          fontWeight: FontWeight.normal,
-          textColor: textColor,
-        )));
+
+
+    double actionPadding = 5.0;
+
+    if (_toast.actionText != null) {
+      actionPadding = 10.0;
+    }
+
+    bodyChildren.add(
+        Flexible(
+            child: Container(
+                margin: EdgeInsets.only(left: 5,right: actionPadding),
+                child: SabianRobotoText(
+                  _toast.text,
+                  softwrap: true,
+                  type: "Regular",
+                  fontSize: _FONT_SIZE,
+                  fontWeight: FontWeight.normal,
+                  textColor: textColor,
+                ))));
 
     double? actionWidth = _toast.actionSize?.width;
     double? actionHeight = _toast.actionSize?.height;
@@ -162,36 +176,43 @@ class _SabianToastWidget extends StatelessWidget {
       actionHeight = null;
     }
 
-    return Container(
-        width: MediaQuery.of(context).size.width,
-        padding: _toast.horizontalSpace ??
-            const EdgeInsets.only(left: 20, right: 20),
-        color: Colors.black.withOpacity(0),
-        child: Container(
-            padding:
-                const EdgeInsets.only(left: 10, top: 15, right: 10, bottom: 15),
-            decoration: BoxDecoration(
-                color: bgColor,
-                borderRadius: _toast.boxRadius ??
-                    const BorderRadius.all(Radius.circular(5))),
-            child: Stack(children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: bodyChildren,
-              ),
 
-              //Action
-              Visibility(
-                  visible: _toast.actionText != null,
-                  child: Container(
-                      width: actionWidth,
-                      height: actionHeight,
-                      alignment: Alignment.centerRight,
-                      child: GestureDetector(
-                          onTap: _onAction, child: _toast.actionText)))
-            ])));
+    return FractionallySizedBox(
+
+      child: Padding(
+
+          padding: _toast.horizontalSpace ??
+              const EdgeInsets.only(left: 20, right: 20),
+
+          child: Container(
+              padding: const EdgeInsets.only(
+                  left: 10, top: 15, right: 10, bottom: 15),
+
+              decoration: BoxDecoration(
+                  color: bgColor,
+                  borderRadius: _toast.boxRadius ??
+                      const BorderRadius.all(Radius.circular(5))),
+
+              child: Stack(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: bodyChildren,
+                    ),
+
+                    //Action
+                    Visibility(
+                        visible: _toast.actionText != null,
+                        child: Container(
+                            width: actionWidth,
+                            height: actionHeight,
+                            alignment: Alignment.centerRight,
+                            child: GestureDetector(
+                                onTap: _onAction, child: _toast.actionText)))
+                  ]))),
+    );
   }
 
   void _onAction() {

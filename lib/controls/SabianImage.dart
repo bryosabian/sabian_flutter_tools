@@ -15,13 +15,12 @@ class SabianImage extends StatefulWidget {
   /// Widget displayed while the target [imageUrl] failed loading.
   final LoadingErrorWidgetBuilder? errorWidget;
 
-  const SabianImage(
-      {this.url,
-      this.assetImage,
-      this.fit,
-      this.placeholder,
-      this.progressIndicatorBuilder,
-      this.errorWidget});
+  const SabianImage({this.url,
+    this.assetImage,
+    this.fit,
+    this.placeholder,
+    this.progressIndicatorBuilder,
+    this.errorWidget});
 
   @override
   State<StatefulWidget> createState() {
