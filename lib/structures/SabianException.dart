@@ -8,10 +8,22 @@ class SabianException implements Exception {
 
   int? code;
 
-  SabianException(this.cause, {this.code,this.title});
+  Exception? throwable;
+
+  SabianException(this.cause, {this.code, this.title});
+
+  factory SabianException.fromObject(Object? cause, {int? code, String? title}){
+    SabianException exception = SabianException("Unknown");
+    exception.cause = cause?.toString() ?? "Unknown";
+    if (cause is Exception) {
+      exception.throwable = cause;
+    }
+    return exception;
+  }
 
   @override
   String toString() {
-    return "cause : %s code : %s".format([cause,code?.toString() ?? "Unknown"]);
+    return "cause : %s code : %s".format(
+        [cause, code?.toString() ?? "Unknown"]);
   }
 }

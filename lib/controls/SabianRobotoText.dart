@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sabian_tools/extensions/Strings+Sabian.dart';
 
 class SabianRobotoText extends StatelessWidget {
+
   final String text;
   final Color? textColor;
   final double? fontSize;
@@ -22,7 +23,7 @@ class SabianRobotoText extends StatelessWidget {
         /// The type without Roboto- prefix
         this.type = "Regular",
         this.overflow,
-        this.align, this.softwrap})
+        this.align, this.softwrap = true})
       : super(key: key);
 
   @override

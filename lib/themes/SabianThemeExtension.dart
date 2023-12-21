@@ -18,38 +18,43 @@ class SabianThemeExtension extends ThemeExtension<SabianThemeExtension> {
   final Color? onNotificationErrorColor;
   final Color? onNotificationInfoColor;
 
-  const SabianThemeExtension({
-    this.dialogBackgroundColor,
-    this.dialogTitleColor,
-    this.dialogTextColor,
-    this.dialogButtonColor,
-    this.textFieldColor,
-    this.notificationDangerColor,
-    this.notificationSuccessColor,
-    this.notificationErrorColor,
-    this.notificationInfoColor,
-    this.onNotificationDangerColor,
-    this.onNotificationSuccessColor,
-    this.onNotificationErrorColor,
-    this.onNotificationInfoColor,
-  });
+  final Color? keyBoardButtonColor;
+  final Color? onKeyBoardButtonColor;
+
+  const SabianThemeExtension(
+      {this.dialogBackgroundColor,
+      this.dialogTitleColor,
+      this.dialogTextColor,
+      this.dialogButtonColor,
+      this.textFieldColor,
+      this.notificationDangerColor,
+      this.notificationSuccessColor,
+      this.notificationErrorColor,
+      this.notificationInfoColor,
+      this.onNotificationDangerColor,
+      this.onNotificationSuccessColor,
+      this.onNotificationErrorColor,
+      this.onNotificationInfoColor,
+      this.keyBoardButtonColor,
+      this.onKeyBoardButtonColor});
 
   @override
-  SabianThemeExtension copyWith({
-    Color? dialogBackgroundColor,
-    Color? dialogTitleColor,
-    Color? dialogTextColor,
-    Color? dialogButtonColor,
-    Color? textFieldColor,
-    Color? notificationDangerColor,
-    Color? notificationSuccessColor,
-    Color? notificationErrorColor,
-    Color? notificationInfoColor,
-    Color? onNotificationDangerColor,
-    Color? onNotificationSuccessColor,
-    Color? onNotificationErrorColor,
-    Color? onNotificationInfoColor,
-  }) {
+  SabianThemeExtension copyWith(
+      {Color? dialogBackgroundColor,
+      Color? dialogTitleColor,
+      Color? dialogTextColor,
+      Color? dialogButtonColor,
+      Color? textFieldColor,
+      Color? notificationDangerColor,
+      Color? notificationSuccessColor,
+      Color? notificationErrorColor,
+      Color? notificationInfoColor,
+      Color? onNotificationDangerColor,
+      Color? onNotificationSuccessColor,
+      Color? onNotificationErrorColor,
+      Color? onNotificationInfoColor,
+      Color? keyBoardButtonColor,
+      Color? onKeyBoardButtonColor}) {
     return SabianThemeExtension(
         dialogBackgroundColor:
             dialogBackgroundColor ?? this.dialogBackgroundColor,
@@ -72,7 +77,10 @@ class SabianThemeExtension extends ThemeExtension<SabianThemeExtension> {
         onNotificationErrorColor:
             onNotificationErrorColor ?? this.onNotificationErrorColor,
         onNotificationInfoColor:
-            onNotificationInfoColor ?? this.onNotificationInfoColor);
+            onNotificationInfoColor ?? this.onNotificationInfoColor,
+        keyBoardButtonColor: keyBoardButtonColor ?? this.keyBoardButtonColor,
+        onKeyBoardButtonColor:
+            onKeyBoardButtonColor ?? this.onKeyBoardButtonColor);
   }
 
   @override
@@ -102,7 +110,11 @@ class SabianThemeExtension extends ThemeExtension<SabianThemeExtension> {
         onNotificationErrorColor: Color.lerp(
             onNotificationErrorColor, other.onNotificationErrorColor, t),
         onNotificationInfoColor: Color.lerp(
-            onNotificationInfoColor, other.onNotificationInfoColor, t));
+            onNotificationInfoColor, other.onNotificationInfoColor, t),
+        keyBoardButtonColor:
+            Color.lerp(keyBoardButtonColor, other.keyBoardButtonColor, t),
+        onKeyBoardButtonColor:
+            Color.lerp(onKeyBoardButtonColor, other.onKeyBoardButtonColor, t));
   }
 
   static SabianThemeExtension? of(BuildContext context) {

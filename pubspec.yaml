@@ -32,6 +32,8 @@ dependencies:
   #fluttertoast: ^8.2.2
   flutter_styled_toast: ^2.2.1
 
+  keyboard_actions: "^4.1.0"
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

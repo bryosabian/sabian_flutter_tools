@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:keyboard_actions/keyboard_actions.dart';
+import 'package:sabian_tools/controls/SabianRobotoText.dart';
 import 'package:sabian_tools/extensions/Strings+Sabian.dart';
+import 'package:sabian_tools/themes/SabianColorScheme.dart';
+import 'package:sabian_tools/themes/WithSabianThemeMixIn.dart';
 
-class SabianRobotoTextField extends StatelessWidget {
+class SabianRobotoTextField extends StatelessWidget with WithSabianThemeMixIn {
   final TextEditingController? controller;
   final String? text;
   final String? hint;
@@ -10,6 +14,7 @@ class SabianRobotoTextField extends StatelessWidget {
   final Color? hintColor;
   final Color? focusColor;
   final Color? backgroundColor;
+  final bool? enabled;
 
   final String? robotoType;
   final TextInputType? inputType;
@@ -37,6 +42,8 @@ class SabianRobotoTextField extends StatelessWidget {
 
   final EdgeInsets? contentPadding;
 
+  final int? maxLines;
+
   /// {@macro flutter.widgets.editableText.onChanged}
   ///
   /// See also:
@@ -59,7 +66,22 @@ class SabianRobotoTextField extends StatelessWidget {
   ///    the user is done editing.
   final ValueChanged<String>? onSubmitted;
 
-  const SabianRobotoTextField(
+  ///
+  final bool showCloseKeyBoardAction;
+
+  ///
+  final String? closeKeyBoardActionTitle;
+
+  ///
+  final Color? keyBoardActionBgColor;
+
+  ///
+  final Color? onKeyBoardActionBgColor;
+
+  ///Focus node
+  FocusNode? focusNode;
+
+  SabianRobotoTextField(
       {Key? key,
       this.controller,
       this.text,
@@ -83,55 +105,121 @@ class SabianRobotoTextField extends StatelessWidget {
       this.prefixIconColor,
       this.suffixIconColor,
       this.iconColor,
+      this.enabled,
       this.onChanged,
       this.onEditingComplete,
-      this.onSubmitted})
-      : super(key: key);
+      this.onSubmitted,
+      this.maxLines,
+      this.focusNode,
+      this.showCloseKeyBoardAction = true,
+      this.closeKeyBoardActionTitle,
+      this.keyBoardActionBgColor,
+      this.onKeyBoardActionBgColor})
+      : super(key: key) {
+    focusNode ??= FocusNode();
+  }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _getField(BuildContext context) {
     TextEditingController? newController;
+
     if (controller == null && text != null) {
       newController = TextEditingController(text: text);
     }
 
+    Color bgColor = backgroundColor ?? Colors.transparent;
+
     //Always wrap TextField in a material widget
     return Material(
+        color: bgColor,
         child: TextField(
-      controller: controller ?? newController,
-      textAlign: textAlign ?? TextAlign.start,
-      textAlignVertical: TextAlignVertical.center,
-      keyboardType: inputType,
-      onChanged: onChanged,
-      onEditingComplete: onEditingComplete,
-      onSubmitted: onSubmitted,
-      style: TextStyle(
-        color: textColor,
-        fontSize: fontSize,
-        fontWeight: fontWeight,
-        fontFamily: "Roboto%s".format([robotoType ?? "Regular"]),
-      ),
-      decoration: InputDecoration(
-          isCollapsed: true,
-          contentPadding: contentPadding,
-          focusColor: focusColor ?? textColor,
-          prefixIcon: prefixIcon,
-          prefixIconColor: prefixIconColor ?? iconColor,
-          suffixIcon: suffixIcon,
-          suffixIconColor: suffixIconColor ?? iconColor,
-          iconColor: iconColor,
-          hintText: hint,
-          hintTextDirection: direction,
-          border: border,
-          disabledBorder: disabledBorder ?? border,
-          focusedBorder: focusedBorder ?? border,
-          fillColor: backgroundColor ?? Colors.transparent,
-          filled: true,
-          hintStyle: TextStyle(
-              fontFamily: "Roboto%s".format([robotoType ?? "Regular"]),
-              fontSize: fontSize,
-              fontWeight: fontWeight,
-              color: hintColor ?? textColor)),
-    ));
+          maxLines: maxLines,
+          focusNode: focusNode!,
+          enabled: enabled,
+          controller: controller ?? newController,
+          textAlign: textAlign ?? TextAlign.start,
+          textAlignVertical: TextAlignVertical.center,
+          keyboardType: inputType,
+          onChanged: onChanged,
+          onEditingComplete: (onEditingComplete != null)
+              ? () {
+                  focusNode!.unfocus();
+                  onEditingComplete!();
+                }
+              : null,
+          onSubmitted: onSubmitted,
+          style: TextStyle(
+            color: textColor,
+            fontSize: fontSize,
+            fontWeight: fontWeight,
+            fontFamily: "Roboto%s".format([robotoType ?? "Regular"]),
+          ),
+          decoration: InputDecoration(
+              isCollapsed: true,
+              contentPadding: contentPadding,
+              focusColor: focusColor ?? Colors.transparent,
+              prefixIcon: prefixIcon,
+              prefixIconColor: prefixIconColor ?? iconColor,
+              suffixIcon: suffixIcon,
+              suffixIconColor: suffixIconColor ?? iconColor,
+              iconColor: iconColor,
+              hintText: hint,
+              hintTextDirection: direction,
+              border: border,
+              disabledBorder: disabledBorder ?? border,
+              focusedBorder: focusedBorder ?? border,
+              fillColor: Colors.transparent,
+              filled: true,
+              hintStyle: TextStyle(
+                  backgroundColor: Colors.transparent,
+                  fontFamily: "Roboto%s".format([robotoType ?? "Regular"]),
+                  fontSize: fontSize,
+                  fontWeight: fontWeight,
+                  color: hintColor ?? textColor)),
+        ));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (!showCloseKeyBoardAction) {
+      return _getField(context);
+    }
+    return KeyboardActions(
+        disableScroll: true,
+        config: _getKeyboardActions(context),
+        child: _getField(context));
+  }
+
+  KeyboardActionsConfig _getKeyboardActions(BuildContext context) {
+    SabianColorScheme sabianColorScheme = getColorScheme(context);
+
+    Color? actionTextColor = onKeyBoardActionBgColor ??
+        (sabianColorScheme.sabianTheme?.onKeyBoardButtonColor ??
+            sabianColorScheme.defaultScheme.onBackground);
+
+    Color? actionColor = keyBoardActionBgColor ??
+        (sabianColorScheme.sabianTheme?.keyBoardButtonColor ??
+            sabianColorScheme.defaultScheme.background);
+
+    return KeyboardActionsConfig(
+        keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
+        keyboardBarColor: actionColor,
+        nextFocus: true,
+        actions: [
+          KeyboardActionsItem(
+            focusNode: focusNode!,
+            toolbarButtons: [
+              (node) {
+                return GestureDetector(
+                  onTap: () => node.unfocus(),
+                  child: Container(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SabianRobotoText(closeKeyBoardActionTitle ?? "Close",
+                        textColor: actionTextColor),
+                  ),
+                );
+              },
+            ],
+          ),
+        ]);
   }
 }
