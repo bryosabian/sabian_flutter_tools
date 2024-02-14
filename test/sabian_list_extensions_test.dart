@@ -32,4 +32,14 @@ void main() {
     search = items.get(3);
     assert(search == null);
   });
+
+  test("list item returns null if not found", () {
+    List<String> items = ["Jared", "Leto", "Sabian"];
+    String search = "Jared";
+    String? searched = items.firstWhereOrNull((element) => element == search);
+    assert(searched != null);
+
+    searched = items.firstWhereOrNull((p0) => p0 == "No name");
+    assert(searched == null);
+  });
 }

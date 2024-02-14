@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sabian_tools/controls/SabianImage.dart';
 import 'package:sabian_tools/controls/SabianRobotoText.dart';
+import 'package:sabian_tools/controls/SabianWrappedRobotoText.dart';
 import 'package:sabian_tools/modals/list/ListModalItem.dart';
 import 'package:sabian_tools/modals/progress/ISabianProgressType.dart';
 import 'package:sabian_tools/themes/SabianThemeExtension.dart';
@@ -28,45 +30,38 @@ class _ListModalItemWidget extends State<ListModalItemWidget> {
 
     final iconSize = item.iconSize ?? const Size(20, 20);
 
-    List<Widget> children = [];
+    List<Widget> mainBody = [];
 
     if (item.hasAnyIcon) {
       if (item.hasImageIcon) {
-        children.add(_getImageIcon(context, iconSize));
+        mainBody.add(_getImageIcon(context, iconSize));
       } else {
-        children.add(_getIcon(context, iconSize.width));
+        mainBody.add(_getIcon(context, iconSize.width));
       }
     }
 
-    Widget text = SabianRobotoText(
+    Widget text = SabianWrappedRobotoText(
       item.title,
       textColor: sabianTheme?.dialogTextColor ?? theme.colorScheme.onSurface,
       fontSize: 14,
       fontWeight: FontWeight.normal,
       type: "Regular",
+      softwrap: true,
     );
 
-    Widget body;
-    if (children.isNotEmpty) {
-      body = Padding(padding: const EdgeInsets.only(left: 3), child: text);
-    } else {
-      body = text;
+    if (mainBody.isNotEmpty) {
+      //Add padding between icon and text
+      //Padding/Container parent is not good for flexible text layouts even when wrapped in rows
+      mainBody.add(const SizedBox(width: 5, height: 0));
     }
 
-    children.add(body);
+    mainBody.add(text);
 
-    return Column(
+    return Row(
       mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: children,
-        )
-      ],
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: mainBody,
     );
   }
 
@@ -77,8 +72,8 @@ class _ListModalItemWidget extends State<ListModalItemWidget> {
     Widget imageView;
     BoxFit fit = BoxFit.cover;
     if (item.imageIconType == ListImageIconType.url) {
-      imageView = CachedNetworkImage(
-          imageUrl: item.image!,
+      imageView = SabianImage(
+          url: item.image!,
           fit: fit,
           placeholder: (context, url) => const RingProgressType().create(
                 ProgressPayload(
@@ -87,7 +82,7 @@ class _ListModalItemWidget extends State<ListModalItemWidget> {
           errorWidget: (context, url, error) =>
               Icon(Icons.error, size: size.width, color: iconErrorColor));
     } else {
-      imageView = Image(image: AssetImage(item.image!), fit: fit);
+      imageView = SabianImage(assetImage: AssetImage(item.image!), fit: fit);
     }
 
     Widget imageContainer;
@@ -105,10 +100,8 @@ class _ListModalItemWidget extends State<ListModalItemWidget> {
     ListModalItem item = widget.item;
     ThemeData theme = Theme.of(context);
     SabianThemeExtension? sabianTheme = theme.extension();
-    Color iconColor = sabianTheme?.dialogTextColor ?? theme.colorScheme.onSurface;
-    if (item.iconType == ListIconType.fontAwesome) {
-      return FaIcon(item.icon!, color: iconColor, size: fontSize);
-    }
-    return Icon(item.icon, color: iconColor, size: fontSize);
+    Color iconColor =
+        sabianTheme?.dialogTextColor ?? theme.colorScheme.onSurface;
+    return item.iconType.toIcon(item.icon!, iconColor, fontSize);
   }
 }

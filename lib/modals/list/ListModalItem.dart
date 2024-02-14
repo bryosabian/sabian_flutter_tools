@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ListModalItem {
   late String title;
@@ -80,6 +81,18 @@ class ListModalItem {
   }
 }
 
-enum ListIconType { system, fontAwesome }
+enum ListIconType {
+  system,
+  fontAwesome;
+
+  Widget toIcon(IconData data, Color? color, double? fontSize) {
+    switch (this) {
+      case ListIconType.system:
+        return Icon(data, color: color, size: fontSize);
+      case ListIconType.fontAwesome:
+        return FaIcon(data, color: color, size: fontSize);
+    }
+  }
+}
 
 enum ListImageIconType { local, url }

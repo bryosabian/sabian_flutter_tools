@@ -78,43 +78,44 @@ class SabianRobotoTextField extends StatelessWidget with WithSabianThemeMixIn {
   ///
   final Color? onKeyBoardActionBgColor;
 
+  final TextInputAction? textInputAction;
+
   ///Focus node
   FocusNode? focusNode;
 
-  SabianRobotoTextField(
-      {Key? key,
-      this.controller,
-      this.text,
-      this.hint,
-      this.textColor,
-      this.hintColor,
-      this.focusColor,
-      this.backgroundColor,
-      this.robotoType = "Regular",
-      this.inputType,
-      this.textAlign,
-      this.direction,
-      this.fontSize,
-      this.fontWeight = FontWeight.normal,
-      this.border,
-      this.disabledBorder,
-      this.focusedBorder,
-      this.contentPadding,
-      this.prefixIcon,
-      this.suffixIcon,
-      this.prefixIconColor,
-      this.suffixIconColor,
-      this.iconColor,
-      this.enabled,
-      this.onChanged,
-      this.onEditingComplete,
-      this.onSubmitted,
-      this.maxLines,
-      this.focusNode,
-      this.showCloseKeyBoardAction = true,
-      this.closeKeyBoardActionTitle,
-      this.keyBoardActionBgColor,
-      this.onKeyBoardActionBgColor})
+  SabianRobotoTextField({Key? key,
+    this.controller,
+    this.text,
+    this.hint,
+    this.textColor,
+    this.hintColor,
+    this.focusColor,
+    this.backgroundColor,
+    this.robotoType = "Regular",
+    this.inputType,
+    this.textAlign,
+    this.direction,
+    this.fontSize,
+    this.fontWeight = FontWeight.normal,
+    this.border,
+    this.disabledBorder,
+    this.focusedBorder,
+    this.contentPadding,
+    this.prefixIcon,
+    this.suffixIcon,
+    this.prefixIconColor,
+    this.suffixIconColor,
+    this.iconColor,
+    this.enabled,
+    this.onChanged,
+    this.onEditingComplete,
+    this.onSubmitted,
+    this.maxLines,
+    this.focusNode,
+    this.showCloseKeyBoardAction = true,
+    this.closeKeyBoardActionTitle,
+    this.keyBoardActionBgColor,
+    this.onKeyBoardActionBgColor, this.textInputAction})
       : super(key: key) {
     focusNode ??= FocusNode();
   }
@@ -138,13 +139,14 @@ class SabianRobotoTextField extends StatelessWidget with WithSabianThemeMixIn {
           controller: controller ?? newController,
           textAlign: textAlign ?? TextAlign.start,
           textAlignVertical: TextAlignVertical.center,
+          textInputAction: textInputAction,
           keyboardType: inputType,
           onChanged: onChanged,
           onEditingComplete: (onEditingComplete != null)
               ? () {
-                  focusNode!.unfocus();
-                  onEditingComplete!();
-                }
+            focusNode!.unfocus();
+            onEditingComplete!();
+          }
               : null,
           onSubmitted: onSubmitted,
           style: TextStyle(
@@ -208,7 +210,7 @@ class SabianRobotoTextField extends StatelessWidget with WithSabianThemeMixIn {
           KeyboardActionsItem(
             focusNode: focusNode!,
             toolbarButtons: [
-              (node) {
+                  (node) {
                 return GestureDetector(
                   onTap: () => node.unfocus(),
                   child: Container(

@@ -28,11 +28,13 @@ dependencies:
   #Easy isolates
   easy_isolate: ^1.3.0
 
-  #Flutter toast
-  #fluttertoast: ^8.2.2
   flutter_styled_toast: ^2.2.1
 
   keyboard_actions: "^4.1.0"
+
+  intl: any
+
+
 
 dev_dependencies:
   flutter_test:

@@ -32,4 +32,15 @@ extension SabianListModifier<E> on Iterable<E> {
   E? get(int index) {
     return elementAtOrNull(index);
   }
+
+
+  /// Gets element at index or returns null if not found.
+  /// Useful when you just want to get an object or null instead of catching errors
+  E? firstWhereOrNull(bool Function(E) predicate) {
+    try {
+      return firstWhere(predicate);
+    } on Error {
+      return null;
+    }
+  }
 }

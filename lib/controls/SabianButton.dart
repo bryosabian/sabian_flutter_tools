@@ -32,12 +32,7 @@ class SabianButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
         onPressed: onPressed,
-        child: SabianRobotoText(
-            text,
-            textColor: textColor,
-            fontSize: fontSize,
-            type: robotoType ?? "Regular",
-            fontWeight: fontWeight),
+        child: getText(context),
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.resolveWith((states) {
           if (states.contains(MaterialState.pressed)) {
@@ -45,5 +40,14 @@ class SabianButton extends StatelessWidget {
           }
           return backgroundColor;
         })));
+  }
+
+  @protected
+  Widget getText(BuildContext context) {
+    return SabianRobotoText(text,
+        textColor: textColor,
+        fontSize: fontSize,
+        type: robotoType ?? "Regular",
+        fontWeight: fontWeight);
   }
 }
