@@ -7,50 +7,32 @@ import 'package:sabian_tools/modals/progress/ISabianProgressType.dart';
 import 'package:sabian_tools/themes/SabianThemeExtension.dart';
 
 class SabianProgressModal extends SabianModal {
-  @override
-  final String? key;
-
   final ISabianProgressType type;
 
-  @override
-  final String? title;
-
-  @override
-  final String? message;
-
-  @override
-  final String? transition;
-
-
   SabianProgressModal(
-      {this.key,
-      this.title,
-      this.message,
+      {super.key,
+      super.title,
+      super.message,
       this.type = const CircleProgressType(),
       bool? isDismissable = false,
       bool? isDismissableOnTouch = false,
       ThemeData? theme,
-      this.transition = "fade",
+      super.transition = "fade",
       Duration? transitionDuration = const Duration(milliseconds: 200),
       SabianModalTransition? customTransition})
       : super(
-            title: title,
-            message: message,
             theme: theme,
-            transition: transition,
             isDismissible: isDismissable,
             isDismissibleOnTouch: isDismissableOnTouch,
             transitionDuration: transitionDuration,
             customTransition: customTransition);
 
-  SabianProgressModal.of(this.title,
-      {this.key,
-      this.message,
+  SabianProgressModal.of(String title,
+      {super.key,
+      super.message,
       this.type = const CircleProgressType(),
-      this.transition = 'fade'});
-
-
-
+      super.transition = 'fade'})
+      : super(title: title);
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +92,7 @@ class SabianProgressModalWidget extends SabianModalWidget {
 class _SabianProgressState
     extends SabianModalWidgetState<SabianProgressModalWidget> {
   @override
-  Widget getDefaultChild(BuildContext context, ThemeData theme) {
+  Widget getBody(BuildContext context, ThemeData theme) {
     ColorScheme colorScheme = theme.colorScheme;
     SabianThemeExtension? sabianTheme = theme.extension<SabianThemeExtension>();
     return Column(

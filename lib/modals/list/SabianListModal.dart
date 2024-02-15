@@ -11,21 +11,6 @@ import '../Transitions.dart';
 import 'ListModalItem.dart';
 
 class SabianListModal extends SabianModal {
-  @override
-  final String? key;
-
-  @override
-  final String? transition;
-
-  @override
-  String? title;
-
-  @override
-  final bool? isDismissible;
-
-  @override
-  final bool? isDismissibleOnTouch;
-
   String? hint;
   OnListModalItemSelectedCallBack? onSelected;
   bool? hideOnSelected;
@@ -37,41 +22,37 @@ class SabianListModal extends SabianModal {
   int? differentThreadThreshold;
 
   SabianListModal(
-      {this.key,
-      this.title,
+      {super.key,
+      super.title,
       required this.items,
       this.hint,
       this.onSelected,
       this.hideOnSelected = true,
       this.searchIcon = Icons.search,
       this.allowSearch = true,
-      this.isDismissible = false,
-      this.isDismissibleOnTouch = true,
+      super.isDismissible = false,
+      super.isDismissibleOnTouch = true,
       ThemeData? theme,
-      this.transition = "fade",
+      super.transition = "fade",
       this.differentThreadThreshold = 50,
       Duration transitionDuration = const Duration(milliseconds: 200),
       SabianModalTransition? customTransition})
       : super(
-            key: key,
-            title: title,
-            isDismissible: isDismissible,
-            isDismissibleOnTouch: isDismissibleOnTouch,
             theme: theme,
-            transition: transition,
             transitionDuration: transitionDuration,
             customTransition: customTransition);
 
-  SabianListModal.of(this.title, this.items, this.onSelected,
-      {this.key,
+  SabianListModal.of(String title, this.items, this.onSelected,
+      {super.key,
       this.hint,
       this.hideOnSelected = true,
       this.searchIcon = Icons.search,
       this.allowSearch = true,
-      this.isDismissible = true,
-      this.isDismissibleOnTouch = true,
-      this.transition = 'fade',
-      this.differentThreadThreshold = 50});
+      super.isDismissible = true,
+      super.isDismissibleOnTouch = true,
+      super.transition = 'fade',
+      this.differentThreadThreshold = 50})
+      : super(title: title);
 
   bool updateList(
       {String? title,
@@ -182,7 +163,7 @@ class _SabianListModal extends SabianModalWidgetState<SabianListModalWidget> {
   }
 
   @override
-  Widget getDefaultChild(BuildContext context, ThemeData theme) {
+  Widget getBody(BuildContext context, ThemeData theme) {
     final canSearch = widget.allowSearch ?? true;
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -225,9 +206,9 @@ class _SabianListModal extends SabianModalWidgetState<SabianListModalWidget> {
         ? EdgeInsets.only(
             left: 0,
             top: 2,
-            right: SabianModalWidgetState.PADDING.right,
+            right: SabianModalWidgetState.DEFAULT_BODY_PADDING.right,
             bottom: 2)
-        : SabianModalWidgetState.PADDING;
+        : SabianModalWidgetState.DEFAULT_BODY_PADDING;
 
     Color textColor = sabianTheme?.dialogTextColor ??
         (sabianTheme?.textFieldColor ?? colorScheme.onSurface);
@@ -274,7 +255,7 @@ class _SabianListModal extends SabianModalWidgetState<SabianListModalWidget> {
             mainAxisSize: MainAxisSize.max,
             children: [
               Padding(
-                  padding: SabianModalWidgetState.PADDING,
+                  padding: SabianModalWidgetState.DEFAULT_BODY_PADDING,
                   child: ListModalItemWidget(item))
             ]));
   }

@@ -1,6 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sabian_tools/extensions/Lists+Sabian.dart';
 
+import 'TestSubject.dart';
+
 void main() {
   test("list conversion from string works", () {
     String jsonList = '["A","B","C","D"]';
@@ -41,5 +43,17 @@ void main() {
 
     searched = items.firstWhereOrNull((p0) => p0 == "No name");
     assert(searched == null);
+  });
+
+  test("mapped by association works", () {
+    List<TestSubject> subjects = [
+      TestSubject("Jared", "He's awesome", 101),
+      TestSubject("Lisa", "She's beautiful", 102),
+      TestSubject("Sarah", "She's charming", 102)
+    ];
+
+    Map<int, TestSubject> mapped = subjects.mappedBy((p0) => p0.ID);
+    assert(mapped.length == 2);
+    assert(mapped[102] != null && mapped[102]!.name == "Sarah");
   });
 }

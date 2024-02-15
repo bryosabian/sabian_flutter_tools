@@ -33,7 +33,6 @@ extension SabianListModifier<E> on Iterable<E> {
     return elementAtOrNull(index);
   }
 
-
   /// Gets element at index or returns null if not found.
   /// Useful when you just want to get an object or null instead of catching errors
   E? firstWhereOrNull(bool Function(E) predicate) {
@@ -42,5 +41,12 @@ extension SabianListModifier<E> on Iterable<E> {
     } on Error {
       return null;
     }
+  }
+}
+
+extension SabianListConverter<E> on Iterable<E> {
+  Map<K, E> mappedBy<K>(K Function(E) key) {
+    final map = {for (E e in this) key(e): e};
+    return map;
   }
 }

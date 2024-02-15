@@ -33,25 +33,31 @@ class SabianModal extends AbstractSabianModal {
 
   final SabianModalTransition? customTransition;
 
-  SabianModal({
-    String? key,
-    this.body,
-    this.title,
-    this.message,
-    this.messageBody,
-    this.buttons,
-    this.theme,
-    this.borderRadius,
-    this.buttonAlignment,
-    bool? isDismissible,
-    bool? isDismissibleOnTouch,
-    Color? backColor,
-    this.dividerThickness,
-    this.divideContent,
-    this.transition = "fade",
-    this.transitionDuration = const Duration(milliseconds: 200),
-    this.customTransition,
-  }) : super(
+  final EdgeInsets? opacityPadding;
+
+  final EdgeInsets? bodyPadding;
+
+  SabianModal(
+      {String? key,
+      this.body,
+      this.title,
+      this.message,
+      this.messageBody,
+      this.buttons,
+      this.theme,
+      this.borderRadius,
+      this.buttonAlignment,
+      bool? isDismissible,
+      bool? isDismissibleOnTouch,
+      Color? backColor,
+      this.dividerThickness,
+      this.divideContent,
+      this.transition = "fade",
+      this.transitionDuration = const Duration(milliseconds: 200),
+      this.customTransition,
+      this.opacityPadding,
+      this.bodyPadding})
+      : super(
           key: key,
           backColor: backColor,
           isDismissible: isDismissible,
@@ -61,27 +67,29 @@ class SabianModal extends AbstractSabianModal {
   @override
   Widget build(BuildContext context) {
     return SabianModalWidget(
-        parent: this,
-        body: body,
-        title: title,
-        message: message,
-        messageBody: messageBody,
-        buttons: buttons,
-        theme: theme,
-        borderRadius: borderRadius,
-        buttonAlignment: buttonAlignment,
-        isDismissible: isDismissible,
-        isDismissibleOnTouch: isDismissibleOnTouch,
-        backColor: backColor,
-        dividerThickness: dividerThickness,
-        divideContent: divideContent,
-        transition: transition,
-        transitionDuration: transitionDuration,
-        customTransition: customTransition);
+      parent: this,
+      body: body,
+      title: title,
+      message: message,
+      messageBody: messageBody,
+      buttons: buttons,
+      theme: theme,
+      borderRadius: borderRadius,
+      buttonAlignment: buttonAlignment,
+      isDismissible: isDismissible,
+      isDismissibleOnTouch: isDismissibleOnTouch,
+      backColor: backColor,
+      dividerThickness: dividerThickness,
+      divideContent: divideContent,
+      transition: transition,
+      transitionDuration: transitionDuration,
+      customTransition: customTransition,
+      opacityPadding: opacityPadding,
+      bodyPadding: bodyPadding,
+    );
   }
 
   bool update({String? title, String? message, bool notifyWhenChanged = true}) {
-
     bool can = [title, message]
         .any((element) => element != null && !element.isBlankOrEmpty);
 
@@ -98,7 +106,6 @@ class SabianModal extends AbstractSabianModal {
     }
 
     if (can) {
-
       this.title = title ?? this.title;
 
       this.message = message ?? this.message;
@@ -131,6 +138,10 @@ class SabianModalWidget extends AbstractSabianModalWidget {
 
   final bool? divideContent;
 
+  final EdgeInsets? opacityPadding;
+
+  final EdgeInsets? bodyPadding;
+
   const SabianModalWidget(
       {Key? key,
       AbstractSabianModal? parent,
@@ -147,6 +158,8 @@ class SabianModalWidget extends AbstractSabianModalWidget {
       backColor,
       this.dividerThickness,
       this.divideContent,
+      this.opacityPadding,
+      this.bodyPadding,
       String? transition = "fade",
       Duration? transitionDuration = const Duration(milliseconds: 200),
       SabianModalTransition? customTransition})
@@ -169,9 +182,15 @@ class SabianModalWidget extends AbstractSabianModalWidget {
 
 class SabianModalWidgetState<T extends SabianModalWidget>
     extends AbstractSabianModalState<T> {
-  static const EdgeInsets MARGIN = EdgeInsets.all(20.0);
+  static const EdgeInsets DEFAULT_MARGIN = EdgeInsets.all(20.0);
 
-  static const EdgeInsets PADDING = EdgeInsets.all(15.0);
+  static const EdgeInsets DEFAULT_BODY_PADDING = EdgeInsets.all(15.0);
+
+  @protected
+  EdgeInsets get opacityPadding => widget.opacityPadding ?? DEFAULT_MARGIN;
+
+  @protected
+  EdgeInsets get bodyPadding => widget.bodyPadding ?? DEFAULT_BODY_PADDING;
 
   @override
   Widget build(BuildContext context) {
@@ -183,21 +202,26 @@ class SabianModalWidgetState<T extends SabianModalWidget>
         onWillPop: () => onBackPressed(),
         child: Center(
             child: Container(
-                margin: MARGIN,
+                margin: opacityPadding,
                 decoration: ShapeDecoration(
                     color: sabianTheme?.dialogBackgroundColor ??
                         theme.dialogBackgroundColor,
                     shape: RoundedRectangleBorder(borderRadius: getRadius())),
-                child: widget.body ?? getDefaultChild(context, theme))));
+                child: getBody(context, theme))));
 
     return currentTransition.getParent(animation: animation, child: child);
   }
 
+  @protected
   BorderRadius getRadius() {
     return widget.borderRadius ?? BorderRadius.circular(15.0);
   }
 
-  Widget getDefaultChild(BuildContext context, ThemeData theme) {
+  @protected
+  Widget getBody(BuildContext context, ThemeData theme) {
+    if (widget.body != null) {
+      return widget.body!;
+    }
     final canDivide = widget.divideContent ?? true;
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -221,16 +245,17 @@ class SabianModalWidgetState<T extends SabianModalWidget>
         ]);
   }
 
+  @protected
   Widget getDefaultHeader(BuildContext context, ThemeData theme) {
     final canDivide = widget.divideContent ?? true;
     ColorScheme colorScheme = theme.colorScheme;
     SabianThemeExtension? sabianTheme = theme.extension<SabianThemeExtension>();
     return Padding(
         padding: EdgeInsets.only(
-            left: PADDING.left,
-            top: PADDING.top,
-            right: PADDING.right,
-            bottom: canDivide ? PADDING.bottom : 2),
+            left: bodyPadding.left,
+            top: bodyPadding.top,
+            right: bodyPadding.right,
+            bottom: canDivide ? bodyPadding.bottom : 2),
         child: SabianRobotoText(widget.title!,
             textColor: sabianTheme?.dialogTitleColor ?? colorScheme.onSurface,
             fontSize: 14,
@@ -238,6 +263,7 @@ class SabianModalWidgetState<T extends SabianModalWidget>
             type: "Regular"));
   }
 
+  @protected
   Widget getDefaultBody(BuildContext context, ThemeData theme) {
     final canDivide = widget.divideContent ?? true;
     ColorScheme colorScheme = theme.colorScheme;
@@ -246,10 +272,10 @@ class SabianModalWidgetState<T extends SabianModalWidget>
         fit: FlexFit.loose,
         child: Padding(
             padding: EdgeInsets.only(
-                left: PADDING.left,
-                top: PADDING.top,
-                right: PADDING.right,
-                bottom: canDivide ? PADDING.bottom : 2),
+                left: bodyPadding.left,
+                top: bodyPadding.top,
+                right: bodyPadding.right,
+                bottom: canDivide ? bodyPadding.bottom : 2),
             child: widget.messageBody ??
                 SabianRobotoText(widget.message!,
                     textColor:
@@ -258,10 +284,14 @@ class SabianModalWidgetState<T extends SabianModalWidget>
                     fontWeight: FontWeight.normal)));
   }
 
+  @protected
   Widget getDefaultFooter(BuildContext context, ThemeData theme) {
     return Padding(
       padding: EdgeInsets.only(
-          left: PADDING.left, top: 2, right: PADDING.right, bottom: 4),
+          left: DEFAULT_BODY_PADDING.left,
+          top: 2,
+          right: DEFAULT_BODY_PADDING.right,
+          bottom: 4),
       child: _getButtons(context, theme),
     );
   }
@@ -287,14 +317,16 @@ class SabianModalWidgetState<T extends SabianModalWidget>
         child: SabianTextButton(
           button.title,
           onPressed: () {
-            if (widget.parent != null)
+            if (widget.parent != null) {
               button.onClick?.call(widget.parent!, context);
+            }
           },
           textColor: button.color ??
               (sabianTheme?.dialogButtonColor ?? theme.primaryColor),
         ));
   }
 
+  @protected
   Divider getDivider(ThemeData theme) {
     double thick = widget.dividerThickness ?? 0.5;
     return Divider(height: thick, thickness: thick, color: theme.dividerColor);
