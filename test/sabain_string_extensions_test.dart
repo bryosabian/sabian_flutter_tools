@@ -50,11 +50,10 @@ void main() {
     assert(data.name == "Lisa Orio" && data.ID == 123);
   });
 
-
-
   test("json deserialization returns null on failure for list", () {
     String json = """"ID" : 123,"name" : "Lisa Orio"}""";
-    List<_TestObject>? data = json.fromJsonToListOrNull((p0) => _TestObject.fromJson(p0));
+    List<_TestObject>? data =
+        json.fromJsonToListOrNull((p0) => _TestObject.fromJson(p0));
     assert(data == null);
   });
 
@@ -62,6 +61,57 @@ void main() {
     String json = """"ID" : 123,"name" : "Lisa Orio"}""";
     _TestObject? data = json.fromJsonOrNull((p0) => _TestObject.fromJson(p0));
     assert(data == null);
+  });
+
+  test("if blank works", () {
+    String blank = "  ";
+    String value = blank.ifBlank(() => "not blank");
+    assert(value == "not blank");
+
+    blank = "still not blank";
+    value = blank.ifBlank(() => "not blank");
+    assert(value == "still not blank");
+  });
+
+  test("if empty works", () {
+    String blank = "";
+    String value = blank.ifEmpty(() => "not blank");
+    assert(value == "not blank");
+
+
+    blank = "  ";
+    value = blank.ifEmpty(() => "not blank");
+    assert(value == "  ");
+
+    blank = "still not blank";
+    value = blank.ifEmpty(() => "not blank");
+    assert(value == "still not blank");
+  });
+
+
+  test("if null works", () {
+    String? blank;
+    String value = blank.ifNullOrBlank(() => "not blank");
+    assert(value == "not blank");
+
+    blank = " ";
+    value = blank.ifBlank(() => "not blank");
+    assert(value == "not blank");
+  });
+
+  test("if null empty works", () {
+    String? blank;
+    String value = blank.ifNullOrEmpty(() => "not blank");
+    assert(value == "not blank");
+
+
+    blank = "  ";
+    value = blank.ifEmpty(() => "not blank");
+    assert(value == "  ");
+
+    blank = "still not blank";
+    value = blank.ifEmpty(() => "not blank");
+    assert(value == "still not blank");
   });
 }
 

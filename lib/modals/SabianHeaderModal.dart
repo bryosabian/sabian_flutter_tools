@@ -12,7 +12,7 @@ class SabianHeaderModal extends SabianModal {
       {super.key,
       super.title,
       super.message,
-      super.messageBody,
+      super.contentBody,
       super.buttons,
       super.divideContent,
       super.dividerThickness,
@@ -21,7 +21,7 @@ class SabianHeaderModal extends SabianModal {
       this.onHeaderColor,
       super.isDismissible = false,
       super.isDismissibleOnTouch = true,
-      super.bodyPadding,
+      super.contentPadding,
       super.opacityPadding,
       ThemeData? theme,
       super.transition = "fade",
@@ -40,7 +40,7 @@ class SabianHeaderModal extends SabianModal {
       body: body,
       buttons: buttons,
       message: message,
-      messageBody: messageBody,
+      contentBody: contentBody,
       divideContent: divideContent,
       dividerThickness: dividerThickness,
       isDismissible: isDismissible,
@@ -52,7 +52,7 @@ class SabianHeaderModal extends SabianModal {
       transition: transition,
       transitionDuration: transitionDuration,
       customTransition: customTransition,
-      bodyPadding: bodyPadding,
+      contentPadding: contentPadding,
       opacityPadding: opacityPadding,
     );
   }
@@ -64,7 +64,7 @@ class _SabianHeaderModalWidget extends SabianModalWidget {
       super.body,
       super.title,
       super.message,
-      super.messageBody,
+      super.contentBody,
       super.buttons,
       super.theme,
       super.borderRadius,
@@ -77,7 +77,7 @@ class _SabianHeaderModalWidget extends SabianModalWidget {
       super.transition = "fade",
       super.transitionDuration = const Duration(milliseconds: 200),
       super.customTransition,
-      super.bodyPadding,
+      super.contentPadding,
       super.opacityPadding});
 
   @override

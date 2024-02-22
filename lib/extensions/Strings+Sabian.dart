@@ -62,3 +62,29 @@ extension SabianJson on String {
     }
   }
 }
+
+extension BlankCheck on String {
+  String ifBlank(String Function() defaultValue) {
+    if (isNotBlankOrEmpty) {
+      return this;
+    }
+    return defaultValue();
+  }
+
+  String ifEmpty(String Function() defaultValue) {
+    if (isNotEmpty) {
+      return this;
+    }
+    return defaultValue();
+  }
+}
+
+extension BlankCheckNullable on String? {
+  String ifNullOrBlank(String Function() defaultValue) {
+    return this?.ifBlank(defaultValue) ?? defaultValue();
+  }
+
+  String ifNullOrEmpty(String Function() defaultValue) {
+    return this?.ifEmpty(defaultValue) ?? defaultValue();
+  }
+}

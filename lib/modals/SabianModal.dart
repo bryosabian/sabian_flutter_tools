@@ -13,7 +13,7 @@ class SabianModal extends AbstractSabianModal {
 
   String? message;
 
-  final Widget? messageBody;
+  final Widget? contentBody;
 
   final ThemeData? theme;
 
@@ -35,14 +35,14 @@ class SabianModal extends AbstractSabianModal {
 
   final EdgeInsets? opacityPadding;
 
-  final EdgeInsets? bodyPadding;
+  final EdgeInsets? contentPadding;
 
   SabianModal(
       {String? key,
       this.body,
       this.title,
       this.message,
-      this.messageBody,
+      this.contentBody,
       this.buttons,
       this.theme,
       this.borderRadius,
@@ -56,7 +56,7 @@ class SabianModal extends AbstractSabianModal {
       this.transitionDuration = const Duration(milliseconds: 200),
       this.customTransition,
       this.opacityPadding,
-      this.bodyPadding})
+      this.contentPadding})
       : super(
           key: key,
           backColor: backColor,
@@ -71,7 +71,7 @@ class SabianModal extends AbstractSabianModal {
       body: body,
       title: title,
       message: message,
-      messageBody: messageBody,
+      contentBody: contentBody,
       buttons: buttons,
       theme: theme,
       borderRadius: borderRadius,
@@ -85,7 +85,7 @@ class SabianModal extends AbstractSabianModal {
       transitionDuration: transitionDuration,
       customTransition: customTransition,
       opacityPadding: opacityPadding,
-      bodyPadding: bodyPadding,
+      contentPadding: contentPadding,
     );
   }
 
@@ -126,7 +126,7 @@ class SabianModalWidget extends AbstractSabianModalWidget {
 
   final String? message;
 
-  final Widget? messageBody;
+  final Widget? contentBody;
 
   final BorderRadius? borderRadius;
 
@@ -140,7 +140,7 @@ class SabianModalWidget extends AbstractSabianModalWidget {
 
   final EdgeInsets? opacityPadding;
 
-  final EdgeInsets? bodyPadding;
+  final EdgeInsets? contentPadding;
 
   const SabianModalWidget(
       {Key? key,
@@ -148,7 +148,7 @@ class SabianModalWidget extends AbstractSabianModalWidget {
       this.body,
       this.title,
       this.message,
-      this.messageBody,
+      this.contentBody,
       this.buttons,
       ThemeData? theme,
       this.borderRadius,
@@ -159,7 +159,7 @@ class SabianModalWidget extends AbstractSabianModalWidget {
       this.dividerThickness,
       this.divideContent,
       this.opacityPadding,
-      this.bodyPadding,
+      this.contentPadding,
       String? transition = "fade",
       Duration? transitionDuration = const Duration(milliseconds: 200),
       SabianModalTransition? customTransition})
@@ -186,11 +186,13 @@ class SabianModalWidgetState<T extends SabianModalWidget>
 
   static const EdgeInsets DEFAULT_BODY_PADDING = EdgeInsets.all(15.0);
 
+  static const EdgeInsets DEFAULT_HEADER_PADDING = EdgeInsets.all(15.0);
+
   @protected
   EdgeInsets get opacityPadding => widget.opacityPadding ?? DEFAULT_MARGIN;
 
   @protected
-  EdgeInsets get bodyPadding => widget.bodyPadding ?? DEFAULT_BODY_PADDING;
+  EdgeInsets get bodyPadding => widget.contentPadding ?? DEFAULT_BODY_PADDING;
 
   @override
   Widget build(BuildContext context) {
@@ -250,12 +252,13 @@ class SabianModalWidgetState<T extends SabianModalWidget>
     final canDivide = widget.divideContent ?? true;
     ColorScheme colorScheme = theme.colorScheme;
     SabianThemeExtension? sabianTheme = theme.extension<SabianThemeExtension>();
+    const headerPadding = DEFAULT_HEADER_PADDING;
     return Padding(
         padding: EdgeInsets.only(
-            left: bodyPadding.left,
-            top: bodyPadding.top,
-            right: bodyPadding.right,
-            bottom: canDivide ? bodyPadding.bottom : 2),
+            left: headerPadding.left,
+            top: headerPadding.top,
+            right: headerPadding.right,
+            bottom: canDivide ? headerPadding.bottom : 2),
         child: SabianRobotoText(widget.title!,
             textColor: sabianTheme?.dialogTitleColor ?? colorScheme.onSurface,
             fontSize: 14,
@@ -276,7 +279,7 @@ class SabianModalWidgetState<T extends SabianModalWidget>
                 top: bodyPadding.top,
                 right: bodyPadding.right,
                 bottom: canDivide ? bodyPadding.bottom : 2),
-            child: widget.messageBody ??
+            child: widget.contentBody ??
                 SabianRobotoText(widget.message!,
                     textColor:
                         sabianTheme?.dialogTextColor ?? colorScheme.onSurface,

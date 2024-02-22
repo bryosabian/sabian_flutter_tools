@@ -26,7 +26,9 @@ extension SabianListModifier<E> on Iterable<E> {
       return null;
     }
   }
+}
 
+extension SabianListItem<E> on Iterable<E> {
   /// Gets element at index or returns null if not found.
   /// Useful when you just want to get an object or null instead of catching errors
   E? get(int index) {
@@ -41,6 +43,23 @@ extension SabianListModifier<E> on Iterable<E> {
     } on Error {
       return null;
     }
+  }
+}
+
+extension SabianListPosition<E> on List<E> {
+  ///Whether object is last
+  bool isLast(E object) {
+    return isIndexLast(indexOf(object));
+  }
+
+  ///Whether object is first
+  bool isFirst(E object) {
+    return indexOf(object) == 0;
+  }
+
+  ///Whether specified index is last
+  bool isIndexLast(int index) {
+    return index == length - 1;
   }
 }
 
