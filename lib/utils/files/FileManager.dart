@@ -1,0 +1,46 @@
+import 'dart:io';
+
+import 'package:path/path.dart';
+import 'package:sabian_tools/extensions/Strings+Sabian.dart';
+import 'package:sabian_tools/utils/utils.dart';
+
+class FileManager {
+  Future<File> copyFileToDir(File file, Directory destination,
+      {bool checkIfExists = true,
+      bool createDirIfDoesNotExist = true,
+      bool deleteAfter = false}) async {
+    bool exists = true;
+
+    if (checkIfExists) {
+      exists = await file.exists();
+      if (!exists) {
+        throw Exception("File does not exist");
+      }
+      exists = await destination.exists();
+      if (!exists) {
+        if (!createDirIfDoesNotExist) {
+          throw Exception("Directory does not exist");
+        } else {
+          destination = await destination.create(recursive: true);
+        }
+      }
+    }
+
+    String fileName = basename(file.path);
+    String destPath = "%s/%s".format([destination.path, fileName]);
+    File newFile = await file.copy(destPath);
+    if (deleteAfter) {
+      final deleted = await file.delete();
+      sabianPrint(deleted.path);
+    }
+    return newFile;
+  }
+
+  Future<File> moveFileToDir(File file, Directory destination,
+      {bool checkIfExists = true, bool createDirIfDoesNotExist = false}) {
+    return copyFileToDir(file, destination,
+        checkIfExists: checkIfExists,
+        createDirIfDoesNotExist: createDirIfDoesNotExist,
+        deleteAfter: true);
+  }
+}

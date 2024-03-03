@@ -12,6 +12,7 @@ class SabianButton extends StatelessWidget {
   final double? fontSize;
   final String? robotoType;
   final FontWeight? fontWeight;
+  final BorderRadius? borderRadius;
 
   final Function()? onPressed;
 
@@ -25,7 +26,8 @@ class SabianButton extends StatelessWidget {
       this.pressedBackgroundColor,
       this.fontSize,
       this.robotoType,
-      this.fontWeight})
+      this.fontWeight,
+      this.borderRadius})
       : super(key: key);
 
   @override
@@ -34,12 +36,17 @@ class SabianButton extends StatelessWidget {
         onPressed: onPressed,
         child: getText(context),
         style: ButtonStyle(
+            shape: (borderRadius == null)
+                ? null
+                : MaterialStateProperty.resolveWith((states) {
+                    return RoundedRectangleBorder(borderRadius: borderRadius!);
+                  }),
             backgroundColor: MaterialStateProperty.resolveWith((states) {
-          if (states.contains(MaterialState.pressed)) {
-            return pressedBackgroundColor ?? backgroundColor;
-          }
-          return backgroundColor;
-        })));
+              if (states.contains(MaterialState.pressed)) {
+                return pressedBackgroundColor ?? backgroundColor;
+              }
+              return backgroundColor;
+            })));
   }
 
   @protected

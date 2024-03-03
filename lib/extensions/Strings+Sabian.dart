@@ -4,7 +4,15 @@ import 'package:sabian_tools/utils/utils.dart';
 import 'package:sprintf/sprintf.dart';
 
 extension SabianNonNullStringExtension on String {
-  String format(var args) => sprintf(this, args);
+  String format(var args) {
+    dynamic mArgs = [];
+    if (args is! List) {
+      mArgs = [args];
+    } else {
+      mArgs = args;
+    }
+    return sprintf(this, mArgs);
+  }
 }
 
 extension SabianNullableStringExtension on String? {

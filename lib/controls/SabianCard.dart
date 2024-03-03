@@ -9,6 +9,8 @@ class SabianCard extends StatelessWidget {
   final SabianBorderRadius? borderRadius;
   final SabianBoxShadow? boxShadow;
   final EdgeInsets? padding;
+  final double? width;
+  final double? height;
 
   const SabianCard(
       {Key? key,
@@ -16,13 +18,16 @@ class SabianCard extends StatelessWidget {
       this.backgroundColor = Colors.grey,
       this.borderRadius = const SabianBorderRadius.all(2.0),
       this.boxShadow = const SabianBoxShadow(),
-      this.padding = const EdgeInsets.all(0.0)
-      })
+      this.padding = const EdgeInsets.all(0.0),
+      this.width,
+      this.height})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: width,
+      height: height,
       padding: padding,
       decoration: BoxDecoration(
           color: backgroundColor,

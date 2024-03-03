@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sabian_tools/controls/SabianButton.dart';
 import 'package:sabian_tools/modals/list/ListModalItem.dart';
-import 'package:sabian_tools/utils/utils.dart';
 
 class SabianBootstrapButton extends SabianButton {
-  final BorderRadius? borderRadius;
   final IconData? leftIcon;
   final ListIconType? leftIconType;
   final IconData? rightIcon;
@@ -26,33 +24,25 @@ class SabianBootstrapButton extends SabianButton {
 
   const SabianBootstrapButton(String text,
       {Key? key,
-      Function()? onPressed,
-      Color? textColor,
-      Color? backgroundColor,
-      Color? pressedTextColor,
-      Color? pressedBackgroundColor,
-      double? fontSize,
-      String? robotoType,
-      FontWeight? fontWeight,
+      super.onPressed,
+      super.textColor,
+      super.backgroundColor,
+      super.pressedTextColor,
+      super.pressedBackgroundColor,
+      super.fontSize,
+      super.robotoType,
+      super.fontWeight,
       this.leftIcon,
       this.leftIconType = ListIconType.system,
       this.rightIcon,
       this.rightIconType = ListIconType.system,
-      this.borderRadius,
+      super.borderRadius,
       this.iconColor,
       this.iconSize,
       this.borderColor})
       : super(
             key: key,
-            text: text,
-            onPressed: onPressed,
-            textColor: textColor,
-            backgroundColor: backgroundColor,
-            pressedTextColor: pressedTextColor,
-            pressedBackgroundColor: pressedBackgroundColor,
-            fontSize: fontSize,
-            robotoType: robotoType,
-            fontWeight: fontWeight);
+            text: text);
 
   @override
   Widget build(BuildContext context) {
