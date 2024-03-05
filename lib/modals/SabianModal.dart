@@ -342,4 +342,10 @@ class SabianModalButton {
   Function(AbstractSabianModal, BuildContext)? onClick;
 
   SabianModalButton(this.title, {this.color, this.onClick});
+
+  factory SabianModalButton.close({String text = "Close", Color? color}) {
+    return SabianModalButton(text, color: color, onClick: (m, c) {
+      m.close(c);
+    });
+  }
 }
