@@ -50,21 +50,21 @@ flutter:
   fonts:
     - family: RobotoRegular
       fonts:
-        - asset: assets/fonts/Roboto/Roboto-Regular.ttf
-        - asset: assets/fonts/Roboto/Roboto-Bold.ttf
+        - asset: assets/fonts/roboto/Roboto-Regular.ttf
+        - asset: assets/fonts/roboto/Roboto-Bold.ttf
           weight: 700
-        - asset: assets/fonts/Roboto/Roboto-Italic.ttf
+        - asset: assets/fonts/roboto/Roboto-Italic.ttf
           style: italic
-        - asset: assets/fonts/Roboto/Roboto-BoldItalic.ttf
+        - asset: assets/fonts/roboto/Roboto-BoldItalic.ttf
           style: italic
           weight: 700
     - family: RobotoCondensed
       fonts:
-        - asset: assets/fonts/Roboto/RobotoCondensed-Regular.ttf
-        - asset: assets/fonts/Roboto/RobotoCondensed-Bold.ttf
+        - asset: assets/fonts/roboto/RobotoCondensed-Regular.ttf
+        - asset: assets/fonts/roboto/RobotoCondensed-Bold.ttf
           weight: 700
-        - asset: assets/fonts/Roboto/RobotoCondensed-Italic.ttf
+        - asset: assets/fonts/roboto/RobotoCondensed-Italic.ttf
           style: italic
-        - asset: assets/fonts/Roboto/RobotoCondensed-BoldItalic.ttf
+        - asset: assets/fonts/roboto/RobotoCondensed-BoldItalic.ttf
           style: italic
           weight: 700
