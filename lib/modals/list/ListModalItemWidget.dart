@@ -75,14 +75,14 @@ class _ListModalItemWidget extends State<ListModalItemWidget> {
       imageView = SabianImage(
           url: item.image!,
           fit: fit,
-          placeholder: (context, url) => const RingProgressType().create(
+          placeholderWidget: (context) => const RingProgressType().create(
                 ProgressPayload(
                     context: context, parent: widget, theme: Theme.of(context)),
               ),
           errorWidget: (context, url, error) =>
               Icon(Icons.error, size: size.width, color: iconErrorColor));
     } else {
-      imageView = SabianImage(assetImage: AssetImage(item.image!), fit: fit);
+      imageView = SabianImage(localImage: AssetImage(item.image!), fit: fit);
     }
 
     Widget imageContainer;

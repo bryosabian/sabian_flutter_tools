@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sabian_tools/modals/SabianPageTransition.dart';
 
+@Deprecated("Use SabianPageNavigator instead")
 class SabianNavigator {
   static SabianNavigator? _instance;
 

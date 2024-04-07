@@ -2,11 +2,11 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:sabian_tools/modals/SabianModal.dart';
+import 'package:sabian_tools/pages/SabianPageNavigator.dart';
 
 typedef Modal = Widget;
 
-class Modals {
-
+class Modals extends SabianPageNavigator<Modal> {
   static final Modals _singleton = Modals._internal();
 
   factory Modals.instance() {
@@ -15,70 +15,20 @@ class Modals {
 
   Modals._internal();
 
-  final LinkedHashMap<String, Route> _routes = LinkedHashMap();
-
-  /// Shows the modal and returns the key to be tracked by route asynchronously
-  Future<String> showAsync<T extends Modal>(
-      BuildContext context, String key, T modal) async {
-    Route<T> route = _getAndRegisterRoute(context, key, modal);
-    await Navigator.of(context).push(route);
-    return key;
-  }
-
-  /// Shows the modal and returns the key to be tracked by route
-  String show<T extends Modal>(BuildContext context, String key, T modal) {
-    Route<T> route = _getAndRegisterRoute(context, key, modal);
-    Navigator.of(context).push(route);
-    return key;
-  }
-
-  Route<T> _getAndRegisterRoute<T extends Modal>(
-      BuildContext context, String key, T modal,
-      {bool returnIfExists = false}) {
-    if (returnIfExists) {
-      Route? oldRoute = _getRoute(key);
-      if (oldRoute != null && oldRoute.isActive && oldRoute is Route<T>) {
-        return oldRoute;
-      }
-    }
+  @override
+  Route<Modal> buildRoute(BuildContext context,
+      {bool fullscreenDialog = false,
+      required Modal page,
+      required bool maintainState}) {
     bool isDismissibleOnTouch = true;
-    if (modal is SabianModalWidget) {
-      isDismissibleOnTouch = modal.isDismissibleOnTouch ?? true;
+    if (page is SabianModalWidget) {
+      isDismissibleOnTouch = page.isDismissibleOnTouch ?? true;
     }
-    Route<T> route = DialogRoute<T>(
+    return DialogRoute<Modal>(
         context: context,
-        builder: (context) => modal,
+        builder: (context) => page,
         barrierDismissible: isDismissibleOnTouch,
         barrierLabel: MaterialLocalizations.of(context).alertDialogLabel);
-    _registerRoute(key, route);
-    return route;
-  }
-
-  void hideLast(BuildContext context) {
-    hide(context, "", hideIfRouteNotFound: true);
-  }
-
-  void hide(BuildContext context, String key,
-      {bool hideIfRouteNotFound = false}) {
-    Route? mRoute = _routes[key];
-    if (mRoute == null) {
-      if (hideIfRouteNotFound) {
-        Navigator.of(context).pop();
-      }
-      return;
-    }
-    if (mRoute.isActive) {
-      Navigator.of(context).removeRoute(mRoute);
-    }
-    _routes.remove(key);
-  }
-
-  void _registerRoute<T extends Modal>(String key, Route<T> route) {
-    _routes[key] = route;
-  }
-
-  Route? _getRoute<T extends Modal>(String key) {
-    return _routes[key];
   }
 
   ///Shows without key
@@ -105,7 +55,8 @@ class Modals {
         context: context,
         barrierDismissible: barrierDismissible ?? true,
         barrierColor: backColor,
-        barrierLabel: label ?? MaterialLocalizations.of(context).alertDialogLabel,
+        barrierLabel:
+            label ?? MaterialLocalizations.of(context).alertDialogLabel,
         builder: (_) => modal);
   }
 

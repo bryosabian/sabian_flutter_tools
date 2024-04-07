@@ -1,14 +1,12 @@
-import 'dart:async';
+import 'package:flutter_debouncer/flutter_debouncer.dart';
 
 class SabianDebounceTask<T> {
   final int debounceMilliseconds;
-  Timer? _timer;
+  final Debouncer _debouncer = Debouncer();
   final void Function(T)? onComplete;
   final void Function(Exception)? onError;
 
   final void Function()? onCancel;
-
-  bool get isActive => _timer?.isActive ?? false;
 
   SabianDebounceTask(
       {required this.debounceMilliseconds,
@@ -19,22 +17,24 @@ class SabianDebounceTask<T> {
   void run(
     T Function() action,
   ) {
-    cancel();
     T? result;
-    _timer = Timer(Duration(milliseconds: debounceMilliseconds), () {
-      try {
-        result = action.call();
-        _complete(result);
-      } on Exception catch (e) {
-        _error(e);
-      } on Error catch (e) {
-        _error(Exception(e));
-      }
-    });
+    _debouncer.debounce(
+        duration: Duration(milliseconds: debounceMilliseconds),
+        onDebounce: () {
+          try {
+            result = action.call();
+            _complete(result);
+          } on Exception catch (e) {
+            _error(e);
+          } on Error catch (e) {
+            _error(Exception(e));
+          }
+        },
+        type: BehaviorType.trailingEdge);
   }
 
   void cancel() {
-    _timer?.cancel();
+    _debouncer.cancel();
     onCancel?.call();
   }
 

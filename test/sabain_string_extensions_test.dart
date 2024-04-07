@@ -113,6 +113,12 @@ void main() {
     value = blank.ifEmpty(() => "not blank");
     assert(value == "still not blank");
   });
+
+  test("stripped spaces works",(){
+    String withSpaces = " test all      spaces ";
+    String stripped = withSpaces.noWhiteSpaces;
+    assert(stripped == "testallspaces");
+  });
 }
 
 class _TestObject {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sabian_tools/modals/Transitions.dart';
 
-class SabianPageTransition {
+class SabianPageTransition<T extends Widget> {
 
   final Widget to;
 
@@ -20,8 +20,8 @@ class SabianPageTransition {
       this.transitionDuration = const Duration(milliseconds: 300),
       this.customTransition});
 
-  PageRouteBuilder get routeBuilder {
-    return PageRouteBuilder(
+  PageRouteBuilder<T> get routeBuilder {
+    return PageRouteBuilder<T>(
         pageBuilder: _getPage,
         transitionsBuilder: _getTransition,
         transitionDuration: transitionDuration,

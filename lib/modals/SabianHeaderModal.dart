@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sabian_tools/controls/SabianWrappedRobotoText.dart';
+import 'package:sabian_tools/modals/AbstractSabianModal.dart';
 import 'package:sabian_tools/modals/SabianModal.dart';
 import 'package:sabian_tools/modals/Transitions.dart';
 
@@ -7,6 +8,7 @@ class SabianHeaderModal extends SabianModal {
   final Color? headerColor;
   final Color? onHeaderColor;
   final double headerHeight;
+  final bool Function(BuildContext, AbstractSabianModal)? onHeaderClose;
 
   SabianHeaderModal(
       {super.key,
@@ -19,6 +21,7 @@ class SabianHeaderModal extends SabianModal {
       this.headerHeight = 80,
       this.headerColor,
       this.onHeaderColor,
+      this.onHeaderClose,
       super.isDismissible = false,
       super.isDismissibleOnTouch = true,
       super.contentPadding,
@@ -121,11 +124,21 @@ class _SabianHeaderModal
           alignment: Alignment.topRight,
           child: GestureDetector(
               onTap: () {
-                close(context);
+                _tryClose(context);
               },
               child: Padding(
                   padding: padding,
                   child: Icon(Icons.clear, size: iconSize, color: textColor))))
     ]);
+  }
+
+  void _tryClose(BuildContext context) {
+    if (headerModal.onHeaderClose != null) {
+      if (headerModal.onHeaderClose!.call(context, widget.parent!)) {
+        close(context);
+      }
+    } else {
+      close(context);
+    }
   }
 }

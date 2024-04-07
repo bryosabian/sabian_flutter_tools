@@ -20,7 +20,9 @@ extension SabianNullableStringExtension on String? {
       (this == null) ? true : (this!.isEmpty || this!.trim().isEmpty);
 
   bool get isNotBlankOrEmpty => !isBlankOrEmpty;
+}
 
+extension SabianRegexShortcutsNullable on String? {
   bool isAMatchByKeyWord(String? keyWord, {bool reverseCheck = false}) {
     if (this == null || keyWord == null) {
       return false;
@@ -35,20 +37,25 @@ extension SabianNullableStringExtension on String? {
     }
     return true;
   }
+
+  String get noWhiteSpaces {
+    String _this = this ?? "";
+    return _this.replaceAll(RegExp(r'\s+'), '');
+  }
 }
 
 extension SabianJson on String {
-  List<T> fromJsonToList<T>(T Function(Map<String, dynamic>) onMap) {
+  List<T> fromJsonToList<T>(T Function(Map<String, dynamic>) onMap,{bool growable = true}) {
     List<dynamic> list = jsonDecode(this);
     List<T> responses = list
         .map((e) => onMap(e as Map<String, dynamic>))
-        .toList(growable: false);
+        .toList(growable: growable);
     return responses;
   }
 
-  List<T>? fromJsonToListOrNull<T>(T Function(Map<String, dynamic>) onMap) {
+  List<T>? fromJsonToListOrNull<T>(T Function(Map<String, dynamic>) onMap,{bool growable = true}) {
     try {
-      return fromJsonToList(onMap);
+      return fromJsonToList(onMap,growable: growable);
     } catch (e) {
       sabianPrint("Could not convert json $e");
       return null;

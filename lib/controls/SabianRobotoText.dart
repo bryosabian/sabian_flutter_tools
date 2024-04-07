@@ -12,6 +12,7 @@ class SabianRobotoText extends StatelessWidget {
   final TextOverflow? overflow;
   final TextAlign? align;
   final bool? softwrap;
+  final int? maxLines;
 
   const SabianRobotoText(this.text,
       {Key? key,
@@ -23,6 +24,7 @@ class SabianRobotoText extends StatelessWidget {
       this.type = "Regular",
       this.overflow,
       this.align,
+        this.maxLines,
       this.softwrap = true})
       : super(key: key);
 
@@ -37,6 +39,7 @@ class SabianRobotoText extends StatelessWidget {
       text,
       textAlign: align,
       softWrap: softwrap,
+      maxLines: maxLines,
       style: TextStyle(
         overflow: overflow,
         decoration: TextDecoration.none,

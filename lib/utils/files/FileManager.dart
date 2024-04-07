@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:path/path.dart';
 import 'package:sabian_tools/extensions/Strings+Sabian.dart';
@@ -42,5 +43,33 @@ class FileManager {
         checkIfExists: checkIfExists,
         createDirIfDoesNotExist: createDirIfDoesNotExist,
         deleteAfter: true);
+  }
+
+  ///Writes bytes to a file
+  /// [fileName] must have the extension too
+  /// [folder] the full path of the parent folder
+  ///
+  Future<File> writeToFile(List<int> data, String fileName,
+      {Directory? folder,
+      bool checkIfDirExists = true,
+      bool createDirIfDoesNotExist = true}) async {
+    bool exists = true;
+
+    if (checkIfDirExists && folder != null) {
+      exists = await folder.exists();
+      if (!exists) {
+        if (!createDirIfDoesNotExist) {
+          throw Exception("Directory does not exist");
+        } else {
+          folder = await folder.create(recursive: true);
+        }
+      }
+    }
+
+    String destPath =
+        (folder != null) ? "%s/%s".format([folder.path, fileName]) : fileName;
+    File newFile = await File(destPath).create(recursive: true);
+    newFile = await newFile.writeAsBytes(data, flush: true);
+    return newFile;
   }
 }

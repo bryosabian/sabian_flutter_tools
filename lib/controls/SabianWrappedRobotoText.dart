@@ -7,25 +7,28 @@ class SabianWrappedRobotoText extends SabianRobotoText {
 
   const SabianWrappedRobotoText(String text,
       {Key? key,
-      Color? textColor,
-      double? fontSize,
-      FontWeight? fontWeight,
+        Color? textColor,
+        double? fontSize,
+        FontWeight? fontWeight,
 
-      /// The type without Roboto- prefix
-      String type = "Regular",
-      TextOverflow? overflow,
-      TextAlign? align,
-      bool? softwrap = true,
-      this.isParentFlexible = true})
+        /// The type without Roboto- prefix
+        String type = "Regular",
+        TextOverflow? overflow,
+        TextAlign? align,
+        bool? softwrap = true,
+        int? maxLines,
+        this.isParentFlexible = true})
       : super(text,
-            key: key,
-            textColor: textColor,
-            fontSize: fontSize,
-            fontWeight: fontWeight,
-            type: type,
-            overflow: overflow,
-            align: align,
-            softwrap: softwrap);
+      key: key,
+      textColor: textColor,
+      fontSize: fontSize,
+      fontWeight: fontWeight,
+      type: type,
+      overflow: overflow,
+      align: align,
+      softwrap: softwrap,
+      maxLines: maxLines
+  );
 
   @override
   Widget getBody(BuildContext context) {
