@@ -27,6 +27,10 @@ class SabianModal extends AbstractSabianModal {
 
   final bool? divideContent;
 
+  final bool? divideHeaderContent;
+
+  final bool? divideFooterContent;
+
   final String? transition;
 
   final Duration? transitionDuration;
@@ -52,6 +56,8 @@ class SabianModal extends AbstractSabianModal {
       Color? backColor,
       this.dividerThickness,
       this.divideContent,
+      this.divideHeaderContent,
+      this.divideFooterContent,
       this.transition = "fade",
       this.transitionDuration = const Duration(milliseconds: 200),
       this.customTransition,
@@ -81,6 +87,8 @@ class SabianModal extends AbstractSabianModal {
       backColor: backColor,
       dividerThickness: dividerThickness,
       divideContent: divideContent,
+      divideHeaderContent: divideHeaderContent,
+      divideFooterContent: divideFooterContent,
       transition: transition,
       transitionDuration: transitionDuration,
       customTransition: customTransition,
@@ -138,6 +146,10 @@ class SabianModalWidget extends AbstractSabianModalWidget {
 
   final bool? divideContent;
 
+  final bool? divideHeaderContent;
+
+  final bool? divideFooterContent;
+
   final EdgeInsets? opacityPadding;
 
   final EdgeInsets? contentPadding;
@@ -158,6 +170,8 @@ class SabianModalWidget extends AbstractSabianModalWidget {
       backColor,
       this.dividerThickness,
       this.divideContent,
+      this.divideHeaderContent,
+      this.divideFooterContent,
       this.opacityPadding,
       this.contentPadding,
       String? transition = "fade",
@@ -194,6 +208,12 @@ class SabianModalWidgetState<T extends SabianModalWidget>
   @protected
   EdgeInsets get bodyPadding => widget.contentPadding ?? DEFAULT_BODY_PADDING;
 
+  bool get _canDividerHeader =>
+      widget.divideHeaderContent ?? (widget.divideContent ?? true);
+
+  bool get _canDivideFooter =>
+      widget.divideFooterContent ?? (widget.divideContent ?? true);
+
   @override
   Widget build(BuildContext context) {
     ThemeData theme = getTheme(context);
@@ -224,7 +244,7 @@ class SabianModalWidgetState<T extends SabianModalWidget>
     if (widget.body != null) {
       return widget.body!;
     }
-    final canDivide = widget.divideContent ?? true;
+
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -234,13 +254,13 @@ class SabianModalWidgetState<T extends SabianModalWidget>
           getDefaultHeader(context, theme),
 
           //Divider
-          if (canDivide) getDivider(theme),
+          if (_canDividerHeader) getDivider(theme),
 
           //Body
           getDefaultBody(context, theme),
 
           //Divider
-          if (canDivide) getDivider(theme),
+          if (_canDivideFooter) getDivider(theme),
 
           //Footer
           getDefaultFooter(context, theme)
