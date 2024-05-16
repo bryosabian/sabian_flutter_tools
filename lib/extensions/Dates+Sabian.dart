@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 extension SabianDateFormats on DateTime {
@@ -5,10 +6,14 @@ extension SabianDateFormats on DateTime {
     DateFormat format = DateFormat(pattern);
     return format.format(this);
   }
+
+  DateTime toJustDate() {
+    return DateUtils.dateOnly(this);
+  }
 }
 
 extension SabianStringDate on String {
-  DateTime toDate(String? pattern) {
+  DateTime toDate([String? pattern]) {
     if (pattern == null) {
       return DateTime.parse(this);
     }
@@ -16,7 +21,7 @@ extension SabianStringDate on String {
     return format.parse(this);
   }
 
-  DateTime? toDateOrNull(String? pattern) {
+  DateTime? toDateOrNull([String? pattern]) {
     try {
       return toDate(pattern);
     } catch (e) {

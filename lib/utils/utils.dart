@@ -3,15 +3,15 @@ import 'dart:math';
 
 import 'package:sabian_tools/utils/Logger.dart';
 
-void sabianPrint(String message) {
-  Loggers().current.log(message);
+void sabianPrint(Object message) {
+  Loggers().current.log(message.toString());
 }
 
 Timer sabianStartCountDown(int maxSeconds, Function() onFinished) {
   const oneSec = Duration(seconds: 1);
   return Timer.periodic(
     oneSec,
-    (Timer timer) {
+        (Timer timer) {
       if (timer.tick >= maxSeconds) {
         onFinished.call();
         timer.cancel();
@@ -27,4 +27,7 @@ String sabianGetRandomString(int len) {
   return List.generate(len, (index) => _chars[r.nextInt(_chars.length)]).join();
 }
 
-int get sabianUniqueID => DateTime.now().millisecondsSinceEpoch;
+int get sabianUniqueID =>
+    DateTime
+        .now()
+        .millisecondsSinceEpoch;

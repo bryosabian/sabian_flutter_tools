@@ -17,6 +17,10 @@ extension SabianListModifier<E> on Iterable<E> {
     return set;
   }
 
+  List<E> distinct() {
+    return toOrderedSet().toList();
+  }
+
   /// Gets element at index or returns null if not found.
   /// Useful when you just want to get an object or null instead of catching errors
   E? elementAtOrNull(int index) {
@@ -67,5 +71,15 @@ extension SabianListConverter<E> on Iterable<E> {
   Map<K, E> mappedBy<K>(K Function(E) key) {
     final map = {for (E e in this) key(e): e};
     return map;
+  }
+}
+
+extension SabianListMethods<E> on List<E> {
+  List<List<E>> chunked(int size) {
+    List<List<E>> chunks = [];
+    for (int i = 0; i < length; i += size) {
+      chunks.add(sublist(i, i + size > length ? length : i + size));
+    }
+    return chunks;
   }
 }
