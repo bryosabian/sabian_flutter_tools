@@ -19,8 +19,7 @@ extension ExceptionToSabianException on Exception {
     if (this is SabianException) {
       return this as SabianException;
     }
-    String cause =
-        toString().ifNullOrBlank(() => SabianException.CAUSE_UNKNOWN);
+    String cause = SabianException.CAUSE_INTERNAL;
     return SabianException(cause)
       ..throwable = this
       ..source = this;

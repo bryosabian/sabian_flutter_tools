@@ -14,6 +14,9 @@ class SabianRobotoText extends StatelessWidget {
   final bool? softwrap;
   final int? maxLines;
 
+  final TextStyle? textStyle;
+  final TextDecoration? textDecoration;
+
   const SabianRobotoText(this.text,
       {Key? key,
       this.textColor,
@@ -24,8 +27,10 @@ class SabianRobotoText extends StatelessWidget {
       this.type = "Regular",
       this.overflow,
       this.align,
-        this.maxLines,
-      this.softwrap = true})
+      this.maxLines,
+      this.softwrap = true,
+      this.textStyle,
+      this.textDecoration = TextDecoration.none})
       : super(key: key);
 
   @override
@@ -42,12 +47,15 @@ class SabianRobotoText extends StatelessWidget {
       maxLines: maxLines,
       style: TextStyle(
         overflow: overflow,
-        decoration: TextDecoration.none,
-        color: textColor,
+        decoration: textDecoration,
+        decorationColor:textColor ?? textStyle?.color, // optional
+        decorationThickness: 1, // optional
+        decorationStyle: TextDecorationStyle.solid,
+        color: textColor ?? textStyle?.color,
         backgroundColor: null,
         fontFamily: "Roboto%s".format([type]),
-        fontSize: fontSize,
-        fontWeight: fontWeight,
+        fontSize: fontSize ?? textStyle?.fontSize,
+        fontWeight: fontWeight ?? textStyle?.fontWeight,
         package: "sabian_tools",
       ),
     );

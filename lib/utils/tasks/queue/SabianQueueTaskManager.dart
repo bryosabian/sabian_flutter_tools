@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:flutter/material.dart';
 import 'package:sabian_tools/extensions/Queues+Sabian.dart';
 import 'package:sabian_tools/utils/tasks/queue/SabianQueueTaskListener.dart';
 import 'package:synchronized/synchronized.dart';
@@ -7,96 +8,107 @@ import 'package:synchronized/synchronized.dart';
 class SabianQueueTaskManager<Q> {
   final SabianQueueTaskListener<Q> listener;
 
-  final ListQueue<Q> _queue = ListQueue();
+  @protected
+  final ListQueue<Q> queue = ListQueue();
 
-  bool _isProcessing = false;
+  @protected
+  bool isProcessing = false;
 
-  Q? _lastQueueItem;
+  @protected
+  Q? lastQueueItem;
 
-  final _lock = Lock();
+  @protected
+  final lock = Lock();
 
   SabianQueueTaskManager({
     required this.listener,
   });
 
   void enqueue(Q item, {bool startImmediate = true}) async {
-    await _lock.synchronized(() async {
-      if (!_queue.contains(item)) {
-        _queue.add(item);
+    await lock.synchronized(() async {
+      if (!queue.contains(item)) {
+        queue.add(item);
       }
-      if (_isProcessing) {
+      if (isProcessing) {
         listener.onQueued?.call(item);
       }
     });
-    if (startImmediate && !_isProcessing) {
+    if (startImmediate && !isProcessing) {
       runNext();
     }
   }
 
   void runNext() async {
-    _lock.synchronized(() async {
-      if (_isProcessing) {
+    lock.synchronized(() async {
+      if (isProcessing) {
         return;
       }
-      _onLastQueueCompleted();
-      _isProcessing = true;
-      final next = _queue.pop();
+      onLastQueueCompleted();
+      isProcessing = true;
+      final next = queue.pop();
       if (next != null) {
-        _execute(next);
+        execute(next);
       } else {
-        _onComplete();
+        onComplete();
       }
     });
   }
 
-  void _execute(Q item) {
+  @protected
+  void execute(Q item) {
     listener.onProcessing?.call(item);
-    _lastQueueItem = item;
+    lastQueueItem = item;
     listener.onExecute.call(item).then((value) {
-      _completeAndRunNext(value);
+      completeAndRunNext(value);
     }).catchError((e) {
-      _failAndRunNext(item, error: e);
+      failAndRunNext(item, error: e);
     });
   }
 
-  void _completeAndRunNext(Q item) {
-    _complete(item, runNext: true);
+  @protected
+  void completeAndRunNext(Q item) async {
+    complete(item, runNext: true);
   }
 
-  void _complete(Q item, {bool runNext = false}) async {
-    _onLastQueueCompleted(last: item);
-    await _lock.synchronized(() {
-      _isProcessing = false;
-    });
-    if (runNext) {
-      this.runNext();
-    }
-  }
-
-  void _failAndRunNext(Q item, {Exception? error}) {
-    _fail(item, error: error, runNext: true);
-  }
-
-  void _fail(Q item, {Exception? error, bool runNext = false}) async {
-    _onLastQueueCompleted(last: item, e: error);
-    await _lock.synchronized(() {
-      _isProcessing = false;
+  @protected
+  void complete(Q item, {bool runNext = false}) async {
+    onLastQueueCompleted(last: item);
+    await lock.synchronized(() {
+      isProcessing = false;
     });
     if (runNext) {
       this.runNext();
     }
   }
 
-  void _onComplete() async {
-    await _lock.synchronized(() {
-      _isProcessing = false;
+  @protected
+  void failAndRunNext(Q item, {Exception? error}) {
+    fail(item, error: error, runNext: true);
+  }
+
+  @protected
+  void fail(Q item, {Exception? error, bool runNext = false}) async {
+    onLastQueueCompleted(last: item, e: error);
+    await lock.synchronized(() {
+      isProcessing = false;
+    });
+    if (runNext) {
+      this.runNext();
+    }
+  }
+
+  @protected
+  void onComplete() async {
+    await lock.synchronized(() {
+      isProcessing = false;
     });
     listener.onAllCompleted?.call(null);
-    _onLastQueueCompleted();
+    onLastQueueCompleted();
   }
 
-  void _onLastQueueCompleted({Q? last, Exception? e}) {
-    final mLast = last ?? _lastQueueItem;
+  @protected
+  void onLastQueueCompleted({Q? last, Exception? e}) {
+    final mLast = last ?? lastQueueItem;
     if (mLast != null) {
       if (e != null) {
         listener.onFailed?.call(e, mLast);
@@ -104,6 +116,6 @@ class SabianQueueTaskManager<Q> {
         listener.onCompleted?.call(mLast);
       }
     }
-    _lastQueueItem = null;
+    lastQueueItem = null;
   }
 }

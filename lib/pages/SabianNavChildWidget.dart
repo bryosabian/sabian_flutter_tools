@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:sabian_tools/pages/SabianAnimatedPageNavigator.dart';
+import 'package:sabian_tools/pages/SabianGlobalPageNavigator.dart';
 import 'package:sabian_tools/pages/SabianPageNavigator.dart';
 
 mixin SabianNavChildMixIn {
-  SabianPageNavigator? parentNavigator;
+  // SabianPageNavigator? parentNavigator;
   String? navigationKey;
+
+  //
+  // SabianPageNavigator get navigator => parentNavigator ?? SabianPageNavigator();
 
   void closeNavigation(BuildContext context, {String? key}) {
     SabianPageNavigator? navigator;
     String? navKey;
 
-    navigator = parentNavigator;
+    navigator = SabianGlobalPageNavigator.of(context)?.navigator;
     navKey = navigationKey;
 
     navKey ??= key;
 
-    final mNavigator = navigator ?? SabianPageNavigator();
+    final mNavigator = navigator ?? SabianAnimatedPageNavigator();
     if (navKey != null) {
       mNavigator.hide(context, navKey, hideIfRouteNotFound: true);
       return;
@@ -26,30 +31,15 @@ mixin SabianNavChildMixIn {
 abstract class SabianNavChildStatelessWidget extends StatelessWidget
     with SabianNavChildMixIn {
   @override
-  SabianPageNavigator? parentNavigator;
-
-  @override
   String? navigationKey;
 
-  SabianNavChildStatelessWidget(
-      {super.key, this.parentNavigator, this.navigationKey});
+  SabianNavChildStatelessWidget({super.key, this.navigationKey});
 }
 
 abstract class SabianNavChildStatefulWidget extends StatefulWidget
     with SabianNavChildMixIn {
   @override
-  SabianPageNavigator? parentNavigator;
-
-  @override
   String? navigationKey;
 
-  SabianNavChildStatefulWidget(
-      {super.key, this.parentNavigator, this.navigationKey});
-}
-
-abstract class SabianNavChildState<T extends SabianNavChildStatefulWidget>
-    extends State<T> {
-  SabianPageNavigator? get pageNavigator => widget.parentNavigator;
-
-  String? get navigationKey => widget.navigationKey;
+  SabianNavChildStatefulWidget({super.key, this.navigationKey});
 }

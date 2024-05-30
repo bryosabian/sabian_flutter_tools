@@ -212,7 +212,10 @@ class SabianModalWidgetState<T extends SabianModalWidget>
       widget.divideHeaderContent ?? (widget.divideContent ?? true);
 
   bool get _canDivideFooter =>
-      widget.divideFooterContent ?? (widget.divideContent ?? true);
+      widget.divideFooterContent ??
+      (widget.divideContent ?? true) && _hasFooter;
+
+  bool get _hasFooter => widget.buttons != null && widget.buttons!.isNotEmpty;
 
   @override
   Widget build(BuildContext context) {
@@ -339,6 +342,7 @@ class SabianModalWidgetState<T extends SabianModalWidget>
         margin: const EdgeInsets.only(right: 0),
         child: SabianTextButton(
           button.title,
+          backgroundColor: Colors.transparent,
           onPressed: () {
             if (widget.parent != null) {
               button.onClick?.call(widget.parent!, context);

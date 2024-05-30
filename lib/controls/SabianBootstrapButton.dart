@@ -9,7 +9,9 @@ class SabianBootstrapButton extends SabianButton {
   final ListIconType? rightIconType;
   final Color? iconColor;
   final double? iconSize;
-  final Color? borderColor;
+  final double? width;
+  final double? height;
+  final EdgeInsetsGeometry? innerPadding;
 
   bool get hasAnyIcon => leftIcon != null || rightIcon != null;
 
@@ -32,6 +34,9 @@ class SabianBootstrapButton extends SabianButton {
       super.fontSize,
       super.robotoType,
       super.fontWeight,
+      this.width,
+      this.height,
+      this.innerPadding,
       this.leftIcon,
       this.leftIconType = ListIconType.system,
       this.rightIcon,
@@ -39,23 +44,31 @@ class SabianBootstrapButton extends SabianButton {
       super.borderRadius,
       this.iconColor,
       this.iconSize,
-      this.borderColor})
-      : super(
-            key: key,
-            text: text);
+      super.borderColor,
+      super.borderWidth})
+      : super(key: key, text: text);
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final styleBgColor = buttonStyle?.backgroundColor?.resolve({});
+
     Decoration decor = BoxDecoration(
-        color: backgroundColor,
+        color: backgroundColor ?? (styleBgColor ?? scheme.primary),
         borderRadius: borderRadiusOrDefault,
-        border: Border.all(color: borderColorOrDefault!));
+        border: Border.all(
+            width: borderWidth ?? 1.0,
+            color: borderColorOrDefault ?? (styleBgColor ?? scheme.primary)));
 
     return GestureDetector(
         onTap: onPressed,
         child: Container(
-            padding: const EdgeInsetsDirectional.symmetric(
-                horizontal: 10, vertical: 10),
+            width: width,
+            height: height,
+            padding: innerPadding ??
+                const EdgeInsetsDirectional.symmetric(
+                    horizontal: 10, vertical: 10),
             child: Row(
               mainAxisAlignment: (hasAnyIcon)
                   ? MainAxisAlignment.start
@@ -70,13 +83,25 @@ class SabianBootstrapButton extends SabianButton {
   }
 
   Widget _getLeftIcon(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final styleIconColor = buttonStyle?.iconColor?.resolve({}) ??
+        buttonStyle?.textStyle?.resolve({})?.color;
     final type = leftIconType ?? ListIconType.system;
-    return type.toIcon(leftIcon!, iconColorOrDefault, iconSizeOrDefault);
+    return type.toIcon(
+        leftIcon!,
+        iconColorOrDefault ?? (styleIconColor ?? scheme.onPrimary),
+        iconSizeOrDefault);
   }
 
   Widget _getRightIcon(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final styleIconColor = buttonStyle?.iconColor?.resolve({}) ??
+        buttonStyle?.textStyle?.resolve({})?.color;
     final type = rightIconType ?? ListIconType.system;
-    return type.toIcon(rightIcon!, iconColorOrDefault, iconSizeOrDefault);
+    return type.toIcon(
+        rightIcon!,
+        iconColorOrDefault ?? (styleIconColor ?? scheme.onPrimary),
+        iconSizeOrDefault);
   }
 
   Widget _wrappedSizedIcon(BuildContext context, Widget icon) {

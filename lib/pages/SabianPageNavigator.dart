@@ -7,18 +7,26 @@ class SabianPageNavigator<T extends Widget> {
 
   /// Shows the modal and returns the key to be tracked by route asynchronously
   Future<String> showAsync(BuildContext context, String key, T page,
-      {bool maintainState = false, bool fullscreenDialog = false}) async {
+      {bool maintainState = false,
+      bool fullscreenDialog = false,
+      Map<String, Object>? extraParams}) async {
     Route<T> route = getAndRegisterRoute(context, key, page,
-        maintainState: maintainState, fullscreenDialog: fullscreenDialog);
+        maintainState: maintainState,
+        fullscreenDialog: fullscreenDialog,
+        extraParams: extraParams);
     await Navigator.of(context).push(route);
     return key;
   }
 
   /// Shows the modal and returns the key to be tracked by route
   String show(BuildContext context, String key, T page,
-      {bool maintainState = false, bool fullscreenDialog = false}) {
+      {bool maintainState = false,
+      bool fullscreenDialog = false,
+      Map<String, Object>? extraParams}) {
     Route<T> route = getAndRegisterRoute(context, key, page,
-        maintainState: maintainState, fullscreenDialog: fullscreenDialog);
+        maintainState: maintainState,
+        fullscreenDialog: fullscreenDialog,
+        extraParams: extraParams);
     Navigator.of(context).push(route);
     return key;
   }
@@ -27,7 +35,8 @@ class SabianPageNavigator<T extends Widget> {
   Route<T> getAndRegisterRoute(BuildContext context, String key, T modal,
       {bool returnIfExists = false,
       bool maintainState = false,
-      bool fullscreenDialog = false}) {
+      bool fullscreenDialog = false,
+      Map<String, Object>? extraParams}) {
     if (returnIfExists) {
       Route? oldRoute = getRoute(key);
       if (oldRoute != null && oldRoute.isActive && oldRoute is Route<T>) {
@@ -37,7 +46,8 @@ class SabianPageNavigator<T extends Widget> {
     Route<T> route = buildRoute(context,
         page: modal,
         maintainState: maintainState,
-        fullscreenDialog: fullscreenDialog);
+        fullscreenDialog: fullscreenDialog,
+        extraParams: extraParams);
 
     registerRoute(key, route);
 
@@ -48,7 +58,8 @@ class SabianPageNavigator<T extends Widget> {
   Route<T> buildRoute(BuildContext context,
       {bool fullscreenDialog = false,
       required T page,
-      required bool maintainState}) {
+      required bool maintainState,
+      Map<String, Object>? extraParams}) {
     return MaterialPageRoute<T>(
         fullscreenDialog: fullscreenDialog,
         builder: (context) => page,
@@ -72,6 +83,15 @@ class SabianPageNavigator<T extends Widget> {
       Navigator.of(context).removeRoute(mRoute);
     }
     _routes.remove(key);
+  }
+
+  ///Hides all routes and shows
+  void hideAllAndShow(BuildContext context, T page,
+      {String? key, Map<String, Object>? extraParams}) {
+    final route =
+        getAndRegisterRoute(context, key ?? "", page, extraParams: extraParams);
+    Navigator.of(context)
+        .pushAndRemoveUntil(route, (Route<dynamic> route) => false);
   }
 
   @protected

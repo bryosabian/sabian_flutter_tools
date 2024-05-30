@@ -19,7 +19,8 @@ class Modals extends SabianPageNavigator<Modal> {
   Route<Modal> buildRoute(BuildContext context,
       {bool fullscreenDialog = false,
       required Modal page,
-      required bool maintainState}) {
+      required bool maintainState,
+      Map<String, Object>? extraParams}) {
     bool isDismissibleOnTouch = true;
     if (page is SabianModalWidget) {
       isDismissibleOnTouch = page.isDismissibleOnTouch ?? true;

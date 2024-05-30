@@ -26,8 +26,7 @@ class SabianException implements Exception {
     } else if (cause is Error) {
       exception = cause.toSabianException;
     } else {
-      exception = SabianException(CAUSE_UNKNOWN);
-      exception.cause = cause?.toString() ?? CAUSE_UNKNOWN;
+      exception = SabianException(CAUSE_INTERNAL);
     }
     if (title?.isNotBlankOrEmpty ?? false) {
       exception.title = title;
@@ -46,7 +45,7 @@ class SabianException implements Exception {
     } else if (cause is Error) {
       exception = (cause).toSabianException;
     } else {
-      exception = SabianException(CAUSE_UNKNOWN);
+      exception = SabianException(CAUSE_INTERNAL);
       exception.cause = cause?.toString() ?? CAUSE_UNKNOWN;
     }
     if (title?.isNotBlankOrEmpty ?? false) {

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:sabian_tools/controls/SabianRobotoText.dart';
 
@@ -7,28 +9,20 @@ class SabianWrappedRobotoText extends SabianRobotoText {
 
   const SabianWrappedRobotoText(String text,
       {Key? key,
-        Color? textColor,
-        double? fontSize,
-        FontWeight? fontWeight,
+      super.textColor,
+      super.fontSize,
+      super.fontWeight,
 
-        /// The type without Roboto- prefix
-        String type = "Regular",
-        TextOverflow? overflow,
-        TextAlign? align,
-        bool? softwrap = true,
-        int? maxLines,
-        this.isParentFlexible = true})
-      : super(text,
-      key: key,
-      textColor: textColor,
-      fontSize: fontSize,
-      fontWeight: fontWeight,
-      type: type,
-      overflow: overflow,
-      align: align,
-      softwrap: softwrap,
-      maxLines: maxLines
-  );
+      /// The type without Roboto- prefix
+      super.type = "Regular",
+      super.overflow,
+      super.align,
+      super.textStyle,
+      super.softwrap = true,
+      super.maxLines,
+      super.textDecoration,
+      this.isParentFlexible = true})
+      : super(text, key: key);
 
   @override
   Widget getBody(BuildContext context) {
