@@ -183,12 +183,10 @@ class SabianLinearDataSearcher<T> {
   }
 
   void _killIsolate() {
-    if (_worker != null) {
-      if (_worker!.isInitialized) {
-        _worker!.dispose(immediate: true);
-      }
-      _worker = null;
+    if (_worker != null && _worker!.isInitialized) {
+      _worker!.dispose(immediate: true);
     }
+    _worker = null;
   }
 
   void dispose() {

@@ -83,3 +83,30 @@ extension SabianListMethods<E> on List<E> {
     return chunks;
   }
 }
+
+extension SabianListObjectItem on Object {
+  List<T> collect<T>() {
+    return [this as T];
+  }
+}
+
+extension SabianIterableExtension<E> on Iterable<E> {
+  Iterable<V> mappedByIndex<V>(V Function(E, int) caller) {
+    return Iterable<int>.generate(length).map((idx) {
+      return caller.call(elementAt(idx), idx);
+    });
+  }
+
+  Iterable<E> whereNotNull([Object? Function(E)? test]) {
+    return where((e) {
+      if (test == null) {
+        return e != null;
+      }
+      return test.call(e) != null;
+    });
+  }
+
+  Iterable<V> mapNotNull<V>(V? Function(E) test) {
+    return whereNotNull(test).map((e) => test.call(e)!);
+  }
+}

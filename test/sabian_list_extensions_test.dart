@@ -52,8 +52,21 @@ void main() {
       TestSubject("Sarah", "She's charming", 102)
     ];
 
-    Map<int, TestSubject> mapped = subjects.mappedBy((p0) => p0.ID);
+    Map<int, TestSubject> mapped = subjects.mappedBy((p0) => p0.ID!);
     assert(mapped.length == 2);
     assert(mapped[102] != null && mapped[102]!.name == "Sarah");
+  });
+
+  test("where not null works", () {
+    List<TestSubject> numbers = [
+      TestSubject("Jared", "Lisa", 101),
+      TestSubject("Sarah", null, null)
+    ];
+    final valid =
+        numbers.whereNotNull((e) => e.description).toList(growable: false);
+    assert(valid.length == 1);
+
+    final mapped = numbers.mapNotNull((e) => e.description);
+    assert(mapped.length == 1 && mapped.first == "Lisa");
   });
 }

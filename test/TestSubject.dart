@@ -1,7 +1,7 @@
 class TestSubject {
-  String name;
-  String description;
-  int ID;
+  String? name;
+  String? description;
+  int? ID;
 
   TestSubject(this.name, this.description, this.ID);
 
