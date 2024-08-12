@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sabian_tools/modals/list/ListModalItem.dart';
 
 class BottomMenuItem {
   String? title;
   String? image;
 
   IconData? icon;
+
+  ListIconType iconType = ListIconType.system;
 
   Color? menuIconColor;
   Color? menuTextColor;
@@ -15,7 +18,6 @@ class BottomMenuItem {
 
   OnMenuItemSelectListener? onMenuItemSelectListener;
   String? id;
-  bool hasNotification = false;
 
   bool get hasNotificationCounter =>
       notificationCounter != null && notificationCounter! > 0;
@@ -32,11 +34,14 @@ class BottomMenuItem {
     isCurrent = true;
   }
 
-  BottomMenuItem();
-
   BottomMenuItem.withId(this.id);
 
   BottomMenuItem.withTitleAndIcon(this.title, this.icon) {
+    id = title;
+  }
+
+  BottomMenuItem.withTitleIconAndListener(
+      this.title, this.icon, this.onMenuItemSelectListener) {
     id = title;
   }
 
@@ -82,6 +87,23 @@ class BottomMenuItem {
 
   @override
   int get hashCode => id.hashCode;
+
+  BottomMenuItem({
+    this.title,
+    this.image,
+    this.icon,
+    this.iconType = ListIconType.system,
+    this.menuIconColor,
+    this.menuTextColor,
+    this.currentMenuIconColor,
+    this.currentMenuTextColor,
+    this.onMenuItemSelectListener,
+    this.id,
+    this.notificationCounter,
+    this.animateNotificationCounter,
+    this.position = 0,
+    this.isCurrent,
+  });
 }
 
 typedef OnMenuItemSelectListener = void Function(

@@ -218,8 +218,8 @@ class _SabianListModal extends SabianModalWidgetState<SabianListModalWidget> {
 
     final prefixIcon = (canShowIcon) ? Icon(widget.searchIcon!) : null;
 
-    return Flexible(
-        fit: FlexFit.loose,
+    return SizedBox(
+        height: 50,
         child: ClipRRect(
             borderRadius: BorderRadius.only(
                 bottomLeft: radius.bottomLeft, bottomRight: radius.bottomRight),

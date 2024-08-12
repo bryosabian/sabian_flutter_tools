@@ -1,8 +1,10 @@
 import 'package:badges/badges.dart' as badge;
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sabian_tools/controls/SabianRobotoText.dart';
 import 'package:sabian_tools/controls/bottomMenu/BottomMenuItem.dart';
 import 'package:sabian_tools/controls/utils.dart';
+import 'package:sabian_tools/modals/list/ListModalItem.dart';
 import 'package:sabian_tools/themes/SabianThemeExtension.dart';
 
 class BottomMenuItemWidget extends StatelessWidget {
@@ -10,6 +12,8 @@ class BottomMenuItemWidget extends StatelessWidget {
   final int? index;
   final Function(BottomMenuItem, int?)? onItemSelected;
   final bool? isSelected;
+
+  bool get _isSelected => isSelected == true || item.isCurrent == true;
 
   const BottomMenuItemWidget(
       {Key? key,
@@ -25,7 +29,7 @@ class BottomMenuItemWidget extends StatelessWidget {
     var textColor = item.menuTextColor ?? theme?.bottomMenuItemTextColor;
     var iconColor =
         (item.menuIconColor ?? theme?.bottomMenuItemIconColor) ?? textColor;
-    if (isSelected == true) {
+    if (_isSelected) {
       textColor = (item.currentMenuTextColor ??
               theme?.currentBottomMenuItemTextColor) ??
           textColor;
@@ -78,6 +82,9 @@ class BottomMenuItemWidget extends StatelessWidget {
 
   @protected
   Widget icon(Color? iconColor) {
+    if (item.iconType == ListIconType.fontAwesome) {
+      return FaIcon(item.icon, size: 20, color: iconColor);
+    }
     return Icon(
       item.icon,
       size: 20,

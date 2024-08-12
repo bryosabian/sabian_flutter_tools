@@ -11,3 +11,7 @@ Widget sabianVerticalSpacer({double height = 2}) {
     height: height,
   );
 }
+
+double sabianAppBarHeight(BuildContext context) {
+  return MediaQuery.of(context).padding.top + kToolbarHeight;
+}

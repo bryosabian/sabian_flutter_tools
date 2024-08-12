@@ -1,6 +1,8 @@
 import 'dart:collection';
 import 'dart:convert';
 
+import 'package:sabian_tools/structures/SabianException.dart';
+
 extension SabianListDeserializer on String {
   List<E> toPrimitiveList<E>() {
     List<E> mList = (jsonDecode(this) as List<dynamic>).cast<E>();
@@ -81,6 +83,48 @@ extension SabianListMethods<E> on List<E> {
       chunks.add(sublist(i, i + size > length ? length : i + size));
     }
     return chunks;
+  }
+
+  void sortBy<T>(T Function(E) key) {
+    sort((a, b) {
+      final mA = key(a);
+      final mB = key(b);
+      if (mA is num && mB is num) {
+        return mA.compareTo(mB);
+      }
+      if (mA is int && mB is int) {
+        return mA.compareTo(mB);
+      }
+      if (mA is String && mB is String) {
+        return mA.compareTo(mB);
+      }
+      if (mA is Comparable && mB is Comparable) {
+        return mA.compareTo(mB);
+      }
+      throw SabianException(
+          "Illegal comparables. Accepted are int, string,bool, or Comparable");
+    });
+  }
+
+  void sortByDesc<T>(T Function(E) key) {
+    sort((a, b) {
+      final mA = key(b);
+      final mB = key(a);
+      if (mA is num && mB is num) {
+        return mA.compareTo(mB);
+      }
+      if (mA is int && mB is int) {
+        return mA.compareTo(mB);
+      }
+      if (mA is String && mB is String) {
+        return mA.compareTo(mB);
+      }
+      if (mA is Comparable && mB is Comparable) {
+        return mA.compareTo(mB);
+      }
+      throw SabianException(
+          "Illegal comparable. Accepted are int, string or Comparable");
+    });
   }
 }
 

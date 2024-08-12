@@ -282,7 +282,7 @@ class SabianModalWidgetState<T extends SabianModalWidget>
             top: headerPadding.top,
             right: headerPadding.right,
             bottom: canDivide ? headerPadding.bottom : 2),
-        child: SabianRobotoText(widget.title!,
+        child: SabianRobotoText(widget.title ?? "",
             textColor: sabianTheme?.dialogTitleColor ?? colorScheme.onSurface,
             fontSize: 14,
             fontWeight: FontWeight.w700,

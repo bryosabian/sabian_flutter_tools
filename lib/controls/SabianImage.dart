@@ -29,6 +29,10 @@ class SabianImage extends StatefulWidget {
   ///The default error widget size
   final double defaultPlaceholderSize;
 
+  final double? width;
+
+  final double? height;
+
   const SabianImage(
       {super.key,
       this.url,
@@ -38,7 +42,9 @@ class SabianImage extends StatefulWidget {
       this.progressWidget,
       this.errorWidget,
       this.defaultPlaceholderSize = 40,
-      this.defaultLoaderSize = 50});
+      this.defaultLoaderSize = 50,
+      this.width,
+      this.height});
 
   @override
   State<StatefulWidget> createState() {
@@ -57,14 +63,15 @@ class _SabianImage extends State<SabianImage> {
 
   Widget _getUrlImage(BuildContext context) {
     return CachedNetworkImage(
+        width: widget.width,
+        height: widget.height,
         imageUrl: widget.url!,
         fit: widget.fit,
-        progressIndicatorBuilder: (c, w, p) {
-          if (widget.progressWidget != null) {
-            return widget.progressWidget!.call(c, p);
-          }
-          return _defaultProgress(context);
-        },
+        progressIndicatorBuilder: (widget.progressWidget != null)
+            ? (c, w, p) {
+                return widget.progressWidget!.call(c, p);
+              }
+            : null,
         errorWidget: (c, _, e) {
           if (widget.errorWidget != null) {
             return widget.errorWidget!.call(c, e, null);
@@ -72,18 +79,19 @@ class _SabianImage extends State<SabianImage> {
           if (widget.placeholderWidget != null) {
             return widget.placeholderWidget!.call(c);
           }
-          return _defaultPlaceholder(context);
+          return _defaultPlaceholder(c);
         },
-        placeholder: (c, _) {
-          if (widget.placeholderWidget != null) {
-            return widget.placeholderWidget!.call(c);
-          }
-          return _defaultPlaceholder(context);
-        });
+        placeholder: (widget.placeholderWidget != null)
+            ? (c, _) {
+                return widget.placeholderWidget!.call(c);
+              }
+            : null);
   }
 
   Widget _getLocalImage(BuildContext context) {
     return Image(
+      width: widget.width,
+      height: widget.height,
       image: widget.localImage!,
       fit: widget.fit,
       loadingBuilder: (c, w, i) {

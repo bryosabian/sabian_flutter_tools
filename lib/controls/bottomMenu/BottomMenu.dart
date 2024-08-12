@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:sabian_tools/controls/bottomMenu/BottomMenuController.dart';
 import 'package:sabian_tools/controls/bottomMenu/BottomMenuItem.dart';
 import 'package:sabian_tools/controls/bottomMenu/BottomMenuItemHorizontalWidget.dart';
 import 'package:sabian_tools/controls/bottomMenu/BottomMenuItemWidget.dart';
 import 'package:sabian_tools/extensions/Lists+Sabian.dart';
 import 'package:sabian_tools/themes/SabianThemeExtension.dart';
 
-class BottomMenu extends StatelessWidget {
+class BottomMenu extends StatefulWidget {
   final List<BottomMenuItem> items;
   final int? selectedIndex;
   final int maxItems;
@@ -13,12 +14,9 @@ class BottomMenu extends StatelessWidget {
   final String? extraMenuTitle;
   final IconData? moreIcon;
   final double? menuHeight;
+  final BottomMenuController? controller;
 
-  final List<BottomMenuItem> _minimumItems = [];
-  final List<BottomMenuItem> _extraItems = [];
-  bool _hasExtraMenu = false;
-
-  BottomMenu(
+  const BottomMenu(
       {Key? key,
       required this.items,
       this.selectedIndex,
@@ -26,10 +24,47 @@ class BottomMenu extends StatelessWidget {
       this.extraMenuTitle,
       this.moreIcon,
       this.maxItems = 4,
+      this.controller,
       this.menuHeight})
       : super(key: key);
 
-  void _populateMenuList(BuildContext context) {
+  @override
+  State<StatefulWidget> createState() {
+    return _BottomMenu();
+  }
+}
+
+class _BottomMenu extends State<BottomMenu> {
+  BottomMenuController? get controller => widget.controller;
+
+  late List<BottomMenuItem> items;
+
+  int? get selectedIndex => widget.selectedIndex;
+
+  int get maxItems => widget.maxItems;
+
+  Function(int)? get onItemSelected => widget.onItemSelected;
+
+  String? get extraMenuTitle => widget.extraMenuTitle;
+
+  IconData? get moreIcon => widget.moreIcon;
+
+  double? get menuHeight => widget.menuHeight;
+
+  final List<BottomMenuItem> _minimumItems = [];
+
+  final List<BottomMenuItem> _extraItems = [];
+
+  bool _hasExtraMenu = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    items = widget.items;
+  }
+
+  void _populateMenuList() {
     _minimumItems.clear();
     _extraItems.clear();
     items.sort((a, b) => a.position.compareTo(b.position));
@@ -44,8 +79,6 @@ class BottomMenu extends StatelessWidget {
       _minimumItems.add(BottomMenuItem.withTitleAndIcon(
           extraMenuTitle ?? "More", moreIcon ?? Icons.menu)
         ..id = "SabianMoreBro"
-        ..hasNotification =
-            _extraItems.any((item) => item.hasNotificationCounter)
         ..notificationCounter = _extraItems.fold<int>(
             0,
             (previousValue, element) =>
@@ -54,11 +87,18 @@ class BottomMenu extends StatelessWidget {
     } else {
       _minimumItems.addAll(items);
     }
+    controller?.init(items, _onMenusUpdated);
+  }
+
+  void _onMenusUpdated(List<BottomMenuItem> items) {
+    setState(() {
+      this.items = items;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    _populateMenuList(context);
+    _populateMenuList();
     final theme = Theme.of(context);
     final sTheme = theme.extension<SabianThemeExtension>();
     final height = (menuHeight ?? sTheme?.bottomMenuHeight) ?? 60.0;
