@@ -48,7 +48,9 @@ class SabianFullErrorWidget extends StatelessWidget {
   }
 
   Widget _error(BuildContext context) {
-    return Padding(
+    return Container(
+        width: double.infinity,
+        height: double.infinity,
         padding: const EdgeInsets.all(10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -101,7 +103,7 @@ class SabianFullErrorWidget extends StatelessWidget {
   Widget _button(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     return Center(
-        child: GestureDetector(
+        child: sabianSingleClick(
             onTap: onButtonPressed,
             child: SabianRobotoText(
               buttonText ?? "Retry",

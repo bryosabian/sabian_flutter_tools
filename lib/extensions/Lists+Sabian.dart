@@ -69,6 +69,23 @@ extension SabianListPosition<E> on List<E> {
   }
 }
 
+extension SabianSetPosition<E> on Set<E> {
+  ///Whether object is last
+  bool isLast(E object) {
+    return isIndexLast(toList(growable: false).indexOf(object));
+  }
+
+  ///Whether object is first
+  bool isFirst(E object) {
+    return toList(growable: false).indexOf(object) == 0;
+  }
+
+  ///Whether specified index is last
+  bool isIndexLast(int index) {
+    return index == length - 1;
+  }
+}
+
 extension SabianListConverter<E> on Iterable<E> {
   Map<K, E> mappedBy<K>(K Function(E) key) {
     final map = {for (E e in this) key(e): e};

@@ -7,4 +7,8 @@ extension FileSabianExtension on File {
     final encoded = base64Encode(bytes);
     return encoded;
   }
+
+  String get fileName {
+    return path.split('/').last;
+  }
 }

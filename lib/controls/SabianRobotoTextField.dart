@@ -19,6 +19,7 @@ class SabianRobotoTextField extends StatefulWidget {
   final String? robotoType;
   final TextInputType? inputType;
   final TextAlign? textAlign;
+  final TextAlignVertical? textAlignVertical;
   final TextDirection? direction;
 
   final double? fontSize;
@@ -101,49 +102,51 @@ class SabianRobotoTextField extends StatefulWidget {
 
   final bool centerTextField;
 
-  const SabianRobotoTextField({Key? key,
-    this.controller,
-    this.text,
-    this.hint,
-    this.textColor,
-    this.hintColor,
-    this.focusColor,
-    this.backgroundColor,
-    this.robotoType = "Regular",
-    this.inputType,
-    this.textAlign,
-    this.direction,
-    this.fontSize,
-    this.fontWeight = FontWeight.normal,
-    this.border,
-    this.disabledBorder,
-    this.focusedBorder,
-    this.contentPadding,
-    this.prefixIcon,
-    this.suffixIcon,
-    this.prefixIconColor,
-    this.suffixIconColor,
-    this.iconColor,
-    this.enabled,
-    this.onChanged,
-    this.onEditingComplete,
-    this.onSubmitted,
-    this.maxLines,
-    this.focusNode,
-    this.showCloseKeyBoardAction = true,
-    this.closeKeyBoardActionTitle,
-    this.keyBoardActionBgColor,
-    this.textStyle,
-    this.onKeyBoardActionBgColor,
-    this.textInputAction,
-    this.isPassword = false,
-    this.passwordCharacter,
-    this.autoCorrect = true,
-    this.enableSuggestions = true,
-    this.borderRadius,
-    this.allowPasswordVisibleToggle = false,
-    this.passwordVisibleToggleIconSize,
-    this.centerTextField = true})
+  const SabianRobotoTextField(
+      {Key? key,
+      this.controller,
+      this.text,
+      this.hint,
+      this.textColor,
+      this.hintColor,
+      this.focusColor,
+      this.backgroundColor,
+      this.robotoType = "Regular",
+      this.inputType,
+      this.textAlign,
+      this.textAlignVertical,
+      this.direction,
+      this.fontSize,
+      this.fontWeight = FontWeight.normal,
+      this.border,
+      this.disabledBorder,
+      this.focusedBorder,
+      this.contentPadding,
+      this.prefixIcon,
+      this.suffixIcon,
+      this.prefixIconColor,
+      this.suffixIconColor,
+      this.iconColor,
+      this.enabled,
+      this.onChanged,
+      this.onEditingComplete,
+      this.onSubmitted,
+      this.maxLines,
+      this.focusNode,
+      this.showCloseKeyBoardAction = true,
+      this.closeKeyBoardActionTitle,
+      this.keyBoardActionBgColor,
+      this.textStyle,
+      this.onKeyBoardActionBgColor,
+      this.textInputAction,
+      this.isPassword = false,
+      this.passwordCharacter,
+      this.autoCorrect = true,
+      this.enableSuggestions = true,
+      this.borderRadius,
+      this.allowPasswordVisibleToggle = false,
+      this.passwordVisibleToggleIconSize,
+      this.centerTextField = true})
       : super(key: key);
 
   @override
@@ -183,7 +186,7 @@ class _SabianRobotoTextFieldState extends State<SabianRobotoTextField> {
       enabled: widget.enabled,
       controller: widget.controller ?? newController,
       textAlign: widget.textAlign ?? TextAlign.start,
-      textAlignVertical: TextAlignVertical.center,
+      textAlignVertical: widget.textAlignVertical ?? TextAlignVertical.center,
       textInputAction: widget.textInputAction,
       keyboardType: (wasShowPassword) ? TextInputType.text : widget.inputType,
       onChanged: widget.onChanged,
@@ -191,9 +194,9 @@ class _SabianRobotoTextFieldState extends State<SabianRobotoTextField> {
       enableSuggestions: !wasShowPassword && widget.enableSuggestions,
       onEditingComplete: (widget.onEditingComplete != null)
           ? () {
-        focusNode!.unfocus();
-        widget.onEditingComplete!();
-      }
+              focusNode!.unfocus();
+              widget.onEditingComplete!();
+            }
           : null,
       onSubmitted: widget.onSubmitted,
       style: TextStyle(
@@ -234,8 +237,10 @@ class _SabianRobotoTextFieldState extends State<SabianRobotoTextField> {
     return Material(
         color: bgColor,
         borderRadius: widget.borderRadius,
-        child: (widget.centerTextField) ? Center(child: text) : Padding(
-            padding: const EdgeInsets.all(3), child: text));
+        child: (widget.centerTextField ||
+                widget.textAlignVertical == TextAlignVertical.center)
+            ? Center(child: text)
+            : Padding(padding: const EdgeInsets.all(3), child: text));
   }
 
   @protected
@@ -273,7 +278,7 @@ class _SabianRobotoTextFieldState extends State<SabianRobotoTextField> {
           KeyboardActionsItem(
             focusNode: focusNode!,
             toolbarButtons: [
-                  (node) {
+              (node) {
                 return GestureDetector(
                   onTap: () => node.unfocus(),
                   child: Container(

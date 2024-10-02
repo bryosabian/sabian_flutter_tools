@@ -39,7 +39,7 @@ abstract class SabianNavChildStatelessWidget extends StatelessWidget
 abstract class SabianNavChildStatefulWidget extends StatefulWidget
     with SabianNavChildMixIn {
   @override
-  String? navigationKey;
+  final String? navigationKey;
 
   SabianNavChildStatefulWidget({super.key, this.navigationKey});
 }

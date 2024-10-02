@@ -12,11 +12,13 @@ class SabianThemeExtension extends ThemeExtension<SabianThemeExtension> {
   final Color? notificationSuccessColor;
   final Color? notificationErrorColor;
   final Color? notificationInfoColor;
+  final Color? notificationInActiveColor;
 
   final Color? onNotificationDangerColor;
   final Color? onNotificationSuccessColor;
   final Color? onNotificationErrorColor;
   final Color? onNotificationInfoColor;
+  final Color? onNotificationInActiveColor;
 
   final Color? keyBoardButtonColor;
   final Color? onKeyBoardButtonColor;
@@ -40,10 +42,12 @@ class SabianThemeExtension extends ThemeExtension<SabianThemeExtension> {
       this.notificationSuccessColor,
       this.notificationErrorColor,
       this.notificationInfoColor,
+      this.notificationInActiveColor,
       this.onNotificationDangerColor,
       this.onNotificationSuccessColor,
       this.onNotificationErrorColor,
       this.onNotificationInfoColor,
+      this.onNotificationInActiveColor,
       this.keyBoardButtonColor,
       this.onKeyBoardButtonColor,
       this.currentBottomMenuItemTextColor,
@@ -64,10 +68,12 @@ class SabianThemeExtension extends ThemeExtension<SabianThemeExtension> {
       Color? notificationSuccessColor,
       Color? notificationErrorColor,
       Color? notificationInfoColor,
+      Color? notificationInActiveColor,
       Color? onNotificationDangerColor,
       Color? onNotificationSuccessColor,
       Color? onNotificationErrorColor,
       Color? onNotificationInfoColor,
+      Color? onNotificationInActiveColor,
       Color? keyBoardButtonColor,
       Color? onKeyBoardButtonColor,
       Color? bottomMenuItemTextColor,
@@ -91,6 +97,8 @@ class SabianThemeExtension extends ThemeExtension<SabianThemeExtension> {
             notificationErrorColor ?? this.notificationErrorColor,
         notificationInfoColor:
             notificationInfoColor ?? this.notificationInfoColor,
+        notificationInActiveColor:
+            notificationInActiveColor ?? this.notificationInActiveColor,
         onNotificationDangerColor:
             onNotificationDangerColor ?? this.onNotificationDangerColor,
         onNotificationSuccessColor:
@@ -99,6 +107,8 @@ class SabianThemeExtension extends ThemeExtension<SabianThemeExtension> {
             onNotificationErrorColor ?? this.onNotificationErrorColor,
         onNotificationInfoColor:
             onNotificationInfoColor ?? this.onNotificationInfoColor,
+        onNotificationInActiveColor:
+            onNotificationInActiveColor ?? this.onNotificationInActiveColor,
         keyBoardButtonColor: keyBoardButtonColor ?? this.keyBoardButtonColor,
         onKeyBoardButtonColor:
             onKeyBoardButtonColor ?? this.onKeyBoardButtonColor,
@@ -136,12 +146,16 @@ class SabianThemeExtension extends ThemeExtension<SabianThemeExtension> {
           Color.lerp(notificationErrorColor, other.notificationErrorColor, t),
       notificationInfoColor:
           Color.lerp(notificationInfoColor, other.notificationInfoColor, t),
+      notificationInActiveColor: Color.lerp(
+          notificationInActiveColor, other.notificationInActiveColor, t),
       onNotificationSuccessColor: Color.lerp(
           onNotificationSuccessColor, other.onNotificationSuccessColor, t),
       onNotificationErrorColor: Color.lerp(
           onNotificationErrorColor, other.onNotificationErrorColor, t),
       onNotificationInfoColor:
           Color.lerp(onNotificationInfoColor, other.onNotificationInfoColor, t),
+      onNotificationInActiveColor: Color.lerp(
+          onNotificationInActiveColor, other.onNotificationInActiveColor, t),
       keyBoardButtonColor:
           Color.lerp(keyBoardButtonColor, other.keyBoardButtonColor, t),
       onKeyBoardButtonColor:

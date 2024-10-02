@@ -16,6 +16,8 @@ class SabianException implements Exception {
 
   static const String CAUSE_INTERNAL = "Internal error";
 
+  static bool canReportInternalErrors = false;
+
   SabianException(this.cause, {this.code, this.title});
 
   factory SabianException.fromDynamic(dynamic cause,

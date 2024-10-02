@@ -11,12 +11,16 @@ class SabianDateAndTimePickerModal extends SabianDatePickerModal {
   TimeOfDay? lastSelectedTime;
 
   @protected
-  String get modalTitle => "%s %s".format(
-      [(timeTitle ?? title) ?? "", selectedDate.toFormattedString(dateFormat)]);
+  String get modalTitle => "%s %s".format([
+        (timeTitle ?? title) ?? "",
+        selectedDateOrDefault.toFormattedString(dateFormat)
+      ]);
 
-  SabianDateAndTimePickerModal(
-      super.minDate, super.maxDate, super.selectedDate, super.onSelected,
-      {super.primaryColor,
+  SabianDateAndTimePickerModal(super.onSelected,
+      {super.minDate,
+      super.maxDate,
+      super.selectedDate,
+      super.primaryColor,
       super.onPrimaryColor,
       super.backgroundColor,
       super.textColor,
@@ -27,6 +31,7 @@ class SabianDateAndTimePickerModal extends SabianDatePickerModal {
       this.onDateSelected,
       this.dateFormat = "yyyy-MM-dd",
       this.timeTitle}) {
+    final selectedDate = selectedDateOrDefault;
     selectedTime =
         TimeOfDay(hour: selectedDate.hour, minute: selectedDate.minute);
   }
@@ -54,7 +59,7 @@ class SabianDateAndTimePickerModal extends SabianDatePickerModal {
 
   @protected
   void onTimeChanged(TimeOfDay timeOfDay) {
-    DateTime localDate = selectedDate;
+    DateTime localDate = selectedDateOrDefault;
     selectedDate = DateTime(
         localDate.year,
         localDate.month,
@@ -64,6 +69,6 @@ class SabianDateAndTimePickerModal extends SabianDatePickerModal {
         localDate.second,
         localDate.millisecond,
         localDate.microsecond);
-    onSelected.call(selectedDate);
+    onSelected.call(selectedDateOrDefault);
   }
 }

@@ -71,4 +71,19 @@ class FileManager {
     newFile = await newFile.writeAsBytes(data, flush: true);
     return newFile;
   }
+
+  ///Writes string to a file
+  /// [fileName] must have the extension too
+  /// [folder] the full path of the parent folder
+  ///
+  Future<File> writeContentToFile(String content, String fileName,
+      {Directory? folder,
+      bool checkIfDirExists = true,
+      bool createDirIfDoesNotExist = true}) async {
+    final data = content.toBytes;
+    return writeToFile(data, fileName,
+        folder: folder,
+        checkIfDirExists: checkIfDirExists,
+        createDirIfDoesNotExist: createDirIfDoesNotExist);
+  }
 }

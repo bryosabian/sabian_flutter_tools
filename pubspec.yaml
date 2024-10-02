@@ -51,6 +51,12 @@ dependencies:
 
   badges: ^3.1.2
 
+  internet_connection_checker: ^2.0.0
+
+  connectivity_plus: ^6.0.5
+
+  jiffy: ^6.3.1
+
 
 dev_dependencies:
   flutter_test:

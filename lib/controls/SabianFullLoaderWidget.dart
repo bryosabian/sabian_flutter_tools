@@ -35,6 +35,8 @@ class SabianFullLoaderWidget extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
     final bgColor = this.bgColor ?? scheme.surface.withOpacity(0.6);
     return Container(
+      width: double.infinity,
+      height: double.infinity,
       color: bgColor,
       padding: const EdgeInsets.all(10),
       child: Center(

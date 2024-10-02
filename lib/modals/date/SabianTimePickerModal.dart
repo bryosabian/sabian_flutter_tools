@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:sabian_tools/modals/date/SabianDateAndTimePickerModal.dart';
 
 class SabianTimePickerModal extends SabianDateAndTimePickerModal {
-  SabianTimePickerModal(
-      super.minDate, super.maxDate, super.selectedDate, super.onSelected,
-      {super.primaryColor,
+  SabianTimePickerModal(super.onSelected,
+      {super.minDate,
+      super.maxDate,
+      super.selectedDate,
+      super.primaryColor,
       super.onPrimaryColor,
       super.backgroundColor,
       super.textColor,
@@ -17,6 +19,6 @@ class SabianTimePickerModal extends SabianDateAndTimePickerModal {
 
   @override
   void show(BuildContext context) async {
-    return showTimeDialog(context, selectedDate);
+    return showTimeDialog(context, selectedDateOrDefault);
   }
 }

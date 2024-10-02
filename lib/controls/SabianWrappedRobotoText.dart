@@ -33,6 +33,7 @@ class SabianWrappedRobotoText extends SabianRobotoText {
     return Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [widget]);
   }
 }

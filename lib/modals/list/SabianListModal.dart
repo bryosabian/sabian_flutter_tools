@@ -179,7 +179,7 @@ class _SabianListModal extends SabianModalWidgetState<SabianListModalWidget> {
   }
 
   Widget _getList(BuildContext context, ThemeData theme) {
-    BorderRadius radius = getRadius();
+    BorderRadius radius = bodyBorderRadius;
     return Flexible(
         fit: FlexFit.loose,
         child: ClipRRect(
@@ -214,7 +214,7 @@ class _SabianListModal extends SabianModalWidgetState<SabianListModalWidget> {
         (sabianTheme?.textFieldColor ?? colorScheme.onSurface);
 
     Color hintColor = theme.hintColor;
-    BorderRadius radius = getRadius();
+    BorderRadius radius = bodyBorderRadius;
 
     final prefixIcon = (canShowIcon) ? Icon(widget.searchIcon!) : null;
 

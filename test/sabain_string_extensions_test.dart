@@ -119,6 +119,16 @@ void main() {
     String stripped = withSpaces.noWhiteSpaces;
     assert(stripped == "testallspaces");
   });
+
+  test("escape regex works",(){
+    String specialString = "Brian //@Sabana@#<>";
+    String escaped = specialString.replaceSpecialRegexChars(replacement : "").noWhiteSpaces;
+    assert(escaped == "BrianSabana");
+
+    specialString = "Lisa@::Brian //@Sabana@#<>";
+    escaped = specialString.replaceSpecialRegexChars(replacement : "").noWhiteSpaces;
+    assert(escaped == "LisaBrianSabana");
+  });
 }
 
 class _TestObject {

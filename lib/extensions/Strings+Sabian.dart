@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:sabian_tools/utils/utils.dart';
 import 'package:sprintf/sprintf.dart';
 
@@ -42,10 +43,23 @@ extension SabianRegexShortcutsNullable on String? {
     String _this = this ?? "";
     return _this.replaceAll(RegExp(r'\s+'), '');
   }
+
+  static String get _SPECIAL_CHARACTERS_REGEX =>
+      r"[<>\/{}%()\[\].+*?^$\|\@\#\:]";
+
+  String escapeSpecialRegexChars() {
+    return this!.replaceAllMapped(
+        RegExp(_SPECIAL_CHARACTERS_REGEX), (match) => '\\${match.group(0)}');
+  }
+
+  String replaceSpecialRegexChars({String replacement = ""}) {
+    return this!.replaceAll(RegExp(_SPECIAL_CHARACTERS_REGEX), replacement);
+  }
 }
 
 extension SabianJson on String {
-  List<T> fromJsonToList<T>(T Function(Map<String, dynamic>) onMap,{bool growable = true}) {
+  List<T> fromJsonToList<T>(T Function(Map<String, dynamic>) onMap,
+      {bool growable = true}) {
     List<dynamic> list = jsonDecode(this);
     List<T> responses = list
         .map((e) => onMap(e as Map<String, dynamic>))
@@ -53,9 +67,10 @@ extension SabianJson on String {
     return responses;
   }
 
-  List<T>? fromJsonToListOrNull<T>(T Function(Map<String, dynamic>) onMap,{bool growable = true}) {
+  List<T>? fromJsonToListOrNull<T>(T Function(Map<String, dynamic>) onMap,
+      {bool growable = true}) {
     try {
-      return fromJsonToList(onMap,growable: growable);
+      return fromJsonToList(onMap, growable: growable);
     } catch (e) {
       sabianPrint("Could not convert json $e");
       return null;
@@ -102,4 +117,14 @@ extension BlankCheckNullable on String? {
   String ifNullOrEmpty(String Function() defaultValue) {
     return this?.ifEmpty(defaultValue) ?? defaultValue();
   }
+}
+
+extension StringBytes on String {
+  List<int> get toBytes {
+    return utf8.encode(this);
+  }
+}
+
+extension KeyExtensions on String {
+  Key get toKey => Key(this);
 }

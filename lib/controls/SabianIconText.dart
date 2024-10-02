@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sabian_tools/controls/SabianIcon.dart';
 import 'package:sabian_tools/controls/SabianWrappedRobotoText.dart';
+import 'package:sabian_tools/modals/list/ListModalItem.dart';
 
 class SabianIconText extends StatelessWidget {
   final IconData icon;
+  final ListIconType iconType;
   final Color? iconColor;
   final Color? textColor;
   final String text;
@@ -18,6 +21,7 @@ class SabianIconText extends StatelessWidget {
 
   const SabianIconText(this.text, this.icon,
       {super.key,
+      this.iconType = ListIconType.system,
       this.iconColor,
       this.textColor,
       this.robotoType,
@@ -47,8 +51,9 @@ class SabianIconText extends StatelessWidget {
 
   Widget _icon(BuildContext context) {
     double size = iconSize ?? (textIconSize ?? _defaultFontSize);
-    return Icon(
+    return SabianIcon(
       icon,
+      iconType: iconType,
       size: size,
       color: iconColor ?? textColor,
     );

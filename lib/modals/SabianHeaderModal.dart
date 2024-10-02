@@ -27,7 +27,7 @@ class SabianHeaderModal extends SabianModal {
       super.contentPadding,
       super.opacityPadding,
       ThemeData? theme,
-      super.transition = "fade",
+      super.transition = "slide_up",
       Duration transitionDuration = const Duration(milliseconds: 200),
       SabianModalTransition? customTransition})
       : super(
@@ -99,7 +99,7 @@ class _SabianHeaderModal
     Color bgColor = headerModal.headerColor ?? colorScheme.primary;
     Color textColor = headerModal.onHeaderColor ?? colorScheme.onPrimary;
     const padding = EdgeInsets.symmetric(vertical: 10, horizontal: 10);
-    BorderRadius radius = getRadius();
+    BorderRadius radius = bodyBorderRadius;
     Radius topLeft = radius.topLeft;
     Radius topRight = radius.topRight;
     const double iconSize = 30;
