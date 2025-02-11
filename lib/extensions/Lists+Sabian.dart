@@ -91,6 +91,17 @@ extension SabianListConverter<E> on Iterable<E> {
     final map = {for (E e in this) key(e): e};
     return map;
   }
+
+  Map<K, List<E>> groupedBy<K>(K Function(E) key) {
+    final Map<K, List<E>> map = {};
+    for (E e in this) {
+      final keyValue = key(e);
+      final mapValue = map[keyValue] ?? [];
+      mapValue.add(e);
+      map[keyValue] = mapValue;
+    }
+    return map;
+  }
 }
 
 extension SabianListMethods<E> on List<E> {

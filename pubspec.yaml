@@ -51,11 +51,13 @@ dependencies:
 
   badges: ^3.1.2
 
-  internet_connection_checker: ^2.0.0
+  internet_connection_checker_plus: ^2.5.2
 
   connectivity_plus: ^6.0.5
 
   jiffy: ^6.3.1
+
+  package_info_plus: ^8.0.2
 
 
 dev_dependencies:

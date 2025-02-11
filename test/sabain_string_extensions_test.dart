@@ -20,6 +20,18 @@ void main() {
     assert(value.isAMatchByKeyWord(keyWord, reverseCheck: true));
   });
 
+  test("json deserialization extension can convert json to direct list",(){
+    const data = "[\"https://ukall-apps.azurewebsites.net/akida/36/1024/images/xOpi.png\"]";
+    final list = data.fromJsonToDirectListOrNull((e) => e as String);
+    assert(list != null && list.length == 1);
+  });
+
+  test("json deserialization extension can convert json to direct item",(){
+    const data = "\"https://ukall-apps.azurewebsites.net/akida/36/1024/images/xOpi.png\"";
+    final list = data.fromDirectJsonOrNull((e) => e as String);
+    assert(list != null);
+  });
+
   test("json deserialization extension can convert json to list ", () {
     String json = """[
     {

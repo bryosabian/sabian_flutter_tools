@@ -69,4 +69,20 @@ void main() {
     final mapped = numbers.mapNotNull((e) => e.description);
     assert(mapped.length == 1 && mapped.first == "Lisa");
   });
+
+  test("list group by works", () {
+    int id = 100;
+    List<TestSubject> subject = [
+      TestSubject("Jared", "Lisa", id++, age: 20),
+      TestSubject("Sarah", "Hassan", id++, age: 20),
+      TestSubject("Mike", "Posner", id++, age: 20),
+      TestSubject("Fred", "Mike", id++, age: 20),
+      TestSubject("Lisa", "Orio", id++, age: 23),
+      TestSubject("Sally", "Mike", id++, age: 23)
+    ];
+    final grouped = subject.groupedBy((e) => e.age);
+    assert(grouped.length == 2);
+    assert(grouped[20] != null && grouped[20]!.length == 4);
+    assert(grouped[23] != null && grouped[23]!.length == 2);
+  });
 }

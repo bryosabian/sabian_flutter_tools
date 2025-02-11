@@ -33,6 +33,25 @@ class SabianDebounceTask<T> {
         type: BehaviorType.trailingEdge);
   }
 
+  void runAsync(
+    Future<T> Function() action,
+  ) {
+    T? result;
+    _debouncer.debounce(
+        duration: Duration(milliseconds: debounceMilliseconds),
+        onDebounce: () async {
+          try {
+            result = await action.call();
+            _complete(result);
+          } on Exception catch (e) {
+            _error(e);
+          } on Error catch (e) {
+            _error(Exception(e));
+          }
+        },
+        type: BehaviorType.trailingEdge);
+  }
+
   void cancel() {
     _debouncer.cancel();
     onCancel?.call();

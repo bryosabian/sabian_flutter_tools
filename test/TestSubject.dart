@@ -2,8 +2,9 @@ class TestSubject {
   String? name;
   String? description;
   int? ID;
+  int? age;
 
-  TestSubject(this.name, this.description, this.ID);
+  TestSubject(this.name, this.description, this.ID, {this.age});
 
   TestSubject.name(this.name, {this.description = "", this.ID = 0});
 

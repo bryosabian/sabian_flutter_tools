@@ -8,7 +8,25 @@ extension FileSabianExtension on File {
     return encoded;
   }
 
-  String get fileName {
-    return path.split('/').last;
+  Future<String?> toBase64OrNull() async {
+    try {
+      return toBase64();
+    } catch (_) {
+      return null;
+    }
   }
+
+  String get fileName {
+    return path
+        .split('/')
+        .last;
+  }
+
+  String get completePath {
+    return path;
+  }
+}
+
+extension FileStringExtension on String {
+  File get toFile => File(this);
 }

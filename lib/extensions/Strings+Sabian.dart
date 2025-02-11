@@ -91,6 +91,38 @@ extension SabianJson on String {
       return null;
     }
   }
+
+  List<T> fromJsonToDirectList<T>(T Function(dynamic) onMap,
+      {bool growable = true}) {
+    List<dynamic> list = jsonDecode(this);
+    List<T> responses = list.map((e) => onMap(e)).toList(growable: growable);
+    return responses;
+  }
+
+  List<T>? fromJsonToDirectListOrNull<T>(T Function(dynamic) onMap,
+      {bool growable = true}) {
+    try {
+      return fromJsonToDirectList(onMap, growable: growable);
+    } catch (e) {
+      sabianPrint("Could not convert json $e");
+      return null;
+    }
+  }
+
+  T fromDirectJson<T>(T Function(dynamic) onMap) {
+    dynamic data = jsonDecode(this);
+    T mData = onMap(data);
+    return mData;
+  }
+
+  T? fromDirectJsonOrNull<T>(T Function(dynamic) onMap) {
+    try {
+      return fromDirectJson(onMap);
+    } catch (e) {
+      sabianPrint("Could not convert json $e");
+      return null;
+    }
+  }
 }
 
 extension BlankCheck on String {

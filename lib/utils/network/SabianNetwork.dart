@@ -1,22 +1,21 @@
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 class SabianNetwork {
   static SabianNetwork? _instance;
 
-  late InternetConnectionChecker checker;
+  late InternetConnection checker;
 
   late Connectivity connectivity;
 
-  SabianNetwork._(
-      {InternetConnectionChecker? checker, Connectivity? connectivity}) {
-    this.checker = checker ?? InternetConnectionChecker();
+  SabianNetwork._({InternetConnection? checker, Connectivity? connectivity}) {
+    this.checker = checker ?? InternetConnection.createInstance();
     this.connectivity = connectivity ?? Connectivity();
   }
 
-  Stream<InternetConnectionStatus> get onStatusChange => checker.onStatusChange;
+  Stream<InternetStatus> get onStatusChange => checker.onStatusChange;
 
   Stream<List<ConnectivityResult>> get onNetworkTypeChanged =>
       connectivity.onConnectivityChanged;
@@ -26,7 +25,7 @@ class SabianNetwork {
   }
 
   Future<bool> get isConnected async {
-    bool isConnected = await checker.hasConnection;
+    bool isConnected = await checker.hasInternetAccess;
     return isConnected;
   }
 
