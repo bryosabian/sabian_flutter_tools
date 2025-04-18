@@ -24,6 +24,25 @@ extension SabianNullableStringExtension on String? {
 }
 
 extension SabianRegexShortcutsNullable on String? {
+  /// e.g Gets literal value from literal key.value e.t.c.
+  ///
+  /// Must be joined by dot operator (.)
+  String? getValueFromDotKey({String prepend = "key", String dot = "."}) {
+    if (this == null) return null;
+    if (this!.isEmpty) return null;
+    final regex = "(${prepend}\\$dot)(.*)";
+    final pattern = RegExp(regex, caseSensitive: false);
+    final match = pattern.firstMatch(this!);
+    if (match != null) {
+      try {
+        return match.group(2);
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
+  }
+
   bool isAMatchByKeyWord(String? keyWord, {bool reverseCheck = false}) {
     if (this == null || keyWord == null) {
       return false;
@@ -42,6 +61,11 @@ extension SabianRegexShortcutsNullable on String? {
   String get noWhiteSpaces {
     String _this = this ?? "";
     return _this.replaceAll(RegExp(r'\s+'), '');
+  }
+
+  String get noDoubleSpaces {
+    String _this = this ?? "";
+    return _this.replaceAll(RegExp(r'\s{2,}'), ' ');
   }
 
   static String get _SPECIAL_CHARACTERS_REGEX =>
@@ -159,4 +183,20 @@ extension StringBytes on String {
 
 extension KeyExtensions on String {
   Key get toKey => Key(this);
+}
+
+extension Manipulation on String {
+  String perfectCase({bool considerSpaces = true}) {
+    if (!considerSpaces) {
+      return toLowerCase().replaceFirstMapped(
+          RegExp(r'[a-z]'), (match) => match.group(0)!.toUpperCase());
+    }
+    final all = split(RegExp(r'\s+'));
+    return all.map((it) => it.perfectCase(considerSpaces: false)).join(' ');
+  }
+
+  String perfectForm() {
+    return trim().noDoubleSpaces.perfectCase();
+  }
+
 }

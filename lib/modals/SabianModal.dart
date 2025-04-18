@@ -7,6 +7,13 @@ import 'package:sabian_tools/modals/Transitions.dart';
 import 'package:sabian_tools/themes/SabianThemeExtension.dart';
 
 class SabianModal extends AbstractSabianModal {
+
+  static const EdgeInsets defaultMargin = EdgeInsets.all(20.0);
+
+  static const EdgeInsets defaultBodyPadding = EdgeInsets.all(15.0);
+
+  static const EdgeInsets defaultHeaderPadding = EdgeInsets.all(15.0);
+
   final Widget? body;
 
   String? title;
@@ -231,17 +238,13 @@ class SabianModalWidget extends AbstractSabianModalWidget {
 
 class SabianModalWidgetState<T extends SabianModalWidget>
     extends AbstractSabianModalState<T> {
-  static const EdgeInsets DEFAULT_MARGIN = EdgeInsets.all(20.0);
 
-  static const EdgeInsets DEFAULT_BODY_PADDING = EdgeInsets.all(15.0);
-
-  static const EdgeInsets DEFAULT_HEADER_PADDING = EdgeInsets.all(15.0);
 
   @protected
-  EdgeInsets get opacityPadding => widget.opacityPadding ?? DEFAULT_MARGIN;
+  EdgeInsets get opacityPadding => widget.opacityPadding ?? SabianModal.defaultMargin;
 
   @protected
-  EdgeInsets get bodyPadding => widget.contentPadding ?? DEFAULT_BODY_PADDING;
+  EdgeInsets get bodyPadding => widget.contentPadding ?? SabianModal.defaultBodyPadding;
 
   @protected
   Size? get modalSize => widget.modalSize;
@@ -318,7 +321,7 @@ class SabianModalWidgetState<T extends SabianModalWidget>
     final canDivide = widget.divideContent ?? true;
     ColorScheme colorScheme = theme.colorScheme;
     SabianThemeExtension? sabianTheme = theme.extension<SabianThemeExtension>();
-    final headerPadding = widget.headerPadding ?? DEFAULT_HEADER_PADDING;
+    final headerPadding = widget.headerPadding ?? SabianModal.defaultHeaderPadding;
     return Padding(
         padding: EdgeInsets.only(
             left: headerPadding.left,
@@ -358,9 +361,9 @@ class SabianModalWidgetState<T extends SabianModalWidget>
     return Padding(
       padding: widget.footerPadding ??
           EdgeInsets.only(
-              left: DEFAULT_BODY_PADDING.left,
+              left: SabianModal.defaultBodyPadding.left,
               top: 2,
-              right: DEFAULT_BODY_PADDING.right,
+              right: SabianModal.defaultBodyPadding.right,
               bottom: 4),
       child: _getButtons(context, theme),
     );

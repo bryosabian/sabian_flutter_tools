@@ -206,9 +206,9 @@ class _SabianListModal extends SabianModalWidgetState<SabianListModalWidget> {
         ? EdgeInsets.only(
             left: 0,
             top: 2,
-            right: SabianModalWidgetState.DEFAULT_BODY_PADDING.right,
+            right: SabianModal.defaultBodyPadding.right,
             bottom: 2)
-        : SabianModalWidgetState.DEFAULT_BODY_PADDING;
+        : SabianModal.defaultBodyPadding;
 
     Color textColor = sabianTheme?.dialogTextColor ??
         (sabianTheme?.textFieldColor ?? colorScheme.onSurface);
@@ -255,7 +255,7 @@ class _SabianListModal extends SabianModalWidgetState<SabianListModalWidget> {
             mainAxisSize: MainAxisSize.max,
             children: [
               Padding(
-                  padding: SabianModalWidgetState.DEFAULT_BODY_PADDING,
+                  padding: SabianModal.defaultBodyPadding,
                   child: ListModalItemWidget(item))
             ]));
   }
