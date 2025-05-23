@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:sabian_tools/extensions/Strings+Sabian.dart';
 
 typedef SabianImageLoaderWidgetBuilder = Widget Function(
     BuildContext context, DownloadProgress? progress);
@@ -62,6 +63,10 @@ class _SabianImage extends State<SabianImage> {
   }
 
   Widget _getUrlImage(BuildContext context) {
+    if (widget.url == null || widget.url!.isBlankOrEmpty) {
+      return widget.placeholderWidget?.call(context) ??
+          _defaultPlaceholder(context);
+    }
     return CachedNetworkImage(
         width: widget.width,
         height: widget.height,

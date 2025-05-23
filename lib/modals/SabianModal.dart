@@ -7,7 +7,6 @@ import 'package:sabian_tools/modals/Transitions.dart';
 import 'package:sabian_tools/themes/SabianThemeExtension.dart';
 
 class SabianModal extends AbstractSabianModal {
-
   static const EdgeInsets defaultMargin = EdgeInsets.all(20.0);
 
   static const EdgeInsets defaultBodyPadding = EdgeInsets.all(15.0);
@@ -15,6 +14,10 @@ class SabianModal extends AbstractSabianModal {
   static const EdgeInsets defaultHeaderPadding = EdgeInsets.all(15.0);
 
   final Widget? body;
+
+  final Widget? header;
+
+  final Widget? footer;
 
   String? title;
 
@@ -58,34 +61,36 @@ class SabianModal extends AbstractSabianModal {
 
   final bool? displayFooter;
 
-  SabianModal(
-      {String? key,
-      this.body,
-      this.title,
-      this.message,
-      this.contentBody,
-      this.buttons,
-      this.theme,
-      this.borderRadius,
-      this.buttonAlignment,
-      bool? isDismissible,
-      bool? isDismissibleOnTouch,
-      Color? backColor,
-      this.dividerThickness,
-      this.divideContent,
-      this.divideHeaderContent,
-      this.divideFooterContent,
-      this.transition = "slide_up",
-      this.transitionDuration = const Duration(milliseconds: 200),
-      this.customTransition,
-      this.opacityPadding,
-      this.contentPadding,
-      this.modalSize,
-      this.headerPadding,
-      this.footerPadding,
-      this.displayHeader,
-      this.displayFooter})
-      : super(
+  SabianModal({
+    String? key,
+    this.body,
+    this.title,
+    this.message,
+    this.contentBody,
+    this.buttons,
+    this.theme,
+    this.borderRadius,
+    this.buttonAlignment,
+    bool? isDismissible,
+    bool? isDismissibleOnTouch,
+    Color? backColor,
+    this.dividerThickness,
+    this.divideContent,
+    this.divideHeaderContent,
+    this.divideFooterContent,
+    this.transition = "slide_up",
+    this.transitionDuration = const Duration(milliseconds: 200),
+    this.customTransition,
+    this.opacityPadding,
+    this.contentPadding,
+    this.modalSize,
+    this.headerPadding,
+    this.footerPadding,
+    this.displayHeader,
+    this.displayFooter,
+    this.header,
+    this.footer,
+  }) : super(
           key: key,
           backColor: backColor,
           isDismissible: isDismissible,
@@ -95,6 +100,8 @@ class SabianModal extends AbstractSabianModal {
   @override
   Widget build(BuildContext context) {
     return SabianModalWidget(
+      header: header,
+      footer: footer,
       parent: this,
       body: body,
       title: title,
@@ -163,6 +170,10 @@ class SabianModalWidget extends AbstractSabianModalWidget {
 
   final Widget? contentBody;
 
+  final Widget? header;
+
+  final Widget? footer;
+
   final BorderRadius? borderRadius;
 
   final List<SabianModalButton>? buttons;
@@ -216,6 +227,8 @@ class SabianModalWidget extends AbstractSabianModalWidget {
       this.modalSize,
       this.displayHeader,
       this.displayFooter,
+      this.header,
+      this.footer,
       String? transition = "fade",
       Duration? transitionDuration = const Duration(milliseconds: 200),
       SabianModalTransition? customTransition})
@@ -238,13 +251,13 @@ class SabianModalWidget extends AbstractSabianModalWidget {
 
 class SabianModalWidgetState<T extends SabianModalWidget>
     extends AbstractSabianModalState<T> {
-
+  @protected
+  EdgeInsets get opacityPadding =>
+      widget.opacityPadding ?? SabianModal.defaultMargin;
 
   @protected
-  EdgeInsets get opacityPadding => widget.opacityPadding ?? SabianModal.defaultMargin;
-
-  @protected
-  EdgeInsets get bodyPadding => widget.contentPadding ?? SabianModal.defaultBodyPadding;
+  EdgeInsets get bodyPadding =>
+      widget.contentPadding ?? SabianModal.defaultBodyPadding;
 
   @protected
   Size? get modalSize => widget.modalSize;
@@ -298,7 +311,8 @@ class SabianModalWidgetState<T extends SabianModalWidget>
         mainAxisSize: MainAxisSize.min, //Make it wrap content the items
         children: [
           //Header
-          if (widget.displayHeader != false) getDefaultHeader(context, theme),
+          if (widget.displayHeader != false)
+            widget.header ?? getDefaultHeader(context, theme),
 
           //Divider
           if (_canDividerHeader && widget.displayHeader != false)
@@ -312,7 +326,8 @@ class SabianModalWidgetState<T extends SabianModalWidget>
             getDivider(theme),
 
           //Footer
-          if (widget.displayFooter != false) getDefaultFooter(context, theme)
+          if (widget.displayFooter != false)
+            widget.footer ?? getDefaultFooter(context, theme)
         ]);
   }
 
@@ -321,7 +336,8 @@ class SabianModalWidgetState<T extends SabianModalWidget>
     final canDivide = widget.divideContent ?? true;
     ColorScheme colorScheme = theme.colorScheme;
     SabianThemeExtension? sabianTheme = theme.extension<SabianThemeExtension>();
-    final headerPadding = widget.headerPadding ?? SabianModal.defaultHeaderPadding;
+    final headerPadding =
+        widget.headerPadding ?? SabianModal.defaultHeaderPadding;
     return Padding(
         padding: EdgeInsets.only(
             left: headerPadding.left,
