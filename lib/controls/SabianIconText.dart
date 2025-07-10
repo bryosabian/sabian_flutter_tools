@@ -17,6 +17,7 @@ class SabianIconText extends StatelessWidget {
   final double? textSize;
   final double? textIconSize;
   final FontWeight? fontWeight;
+  final TextStyle? textStyle;
   static const double _defaultFontSize = 14;
 
   const SabianIconText(this.text, this.icon,
@@ -30,7 +31,9 @@ class SabianIconText extends StatelessWidget {
       this.iconSize,
       this.textSize,
       this.textIconSize,
-      this.fontWeight});
+      this.fontWeight,
+      this.textStyle
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +70,7 @@ class SabianIconText extends StatelessWidget {
       textColor: textColor,
       fontSize: textSize ?? _defaultFontSize,
       fontWeight: fontWeight,
+      textStyle: textStyle,
     );
   }
 }

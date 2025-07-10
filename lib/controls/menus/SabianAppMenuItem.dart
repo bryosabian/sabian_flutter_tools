@@ -37,7 +37,7 @@ class SabianAppMenuItem implements Comparable<SabianAppMenuItem> {
 
   SabianAppMenuItem(
       {this.itemID,
-        this.order,
+        this.order = 10,
         this.title,
         this.showAsIcon,
         this.icon,

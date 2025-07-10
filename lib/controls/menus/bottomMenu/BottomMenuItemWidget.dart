@@ -16,11 +16,12 @@ class BottomMenuItemWidget extends StatelessWidget {
 
   bool get _isSelected => isSelected == true || item.isCurrent == true;
 
-  const BottomMenuItemWidget({Key? key,
-    required this.item,
-    this.index,
-    this.onItemSelected,
-    this.isSelected})
+  const BottomMenuItemWidget(
+      {Key? key,
+      required this.item,
+      this.index,
+      this.onItemSelected,
+      this.isSelected})
       : super(key: key);
 
   @protected
@@ -31,7 +32,7 @@ class BottomMenuItemWidget extends StatelessWidget {
         (item.menuIconColor ?? theme?.bottomMenuItemIconColor) ?? textColor;
     if (_isSelected) {
       textColor = (item.currentMenuTextColor ??
-          theme?.currentBottomMenuItemTextColor) ??
+              theme?.currentBottomMenuItemTextColor) ??
           textColor;
       iconColor = (item.currentMenuIconColor ?? item.currentMenuTextColor) ??
           theme?.currentBottomMenuItemIconColor ??
@@ -63,26 +64,29 @@ class BottomMenuItemWidget extends StatelessWidget {
             Center(
                 child: (item.hasNotificationCounter)
                     ? badge.Badge(
-                    child: icon(iconColor),
-                    badgeContent: SabianRobotoText(
-                        item.notificationCounter.toString(),
-                        textColor: sTheme?.onNotificationInfoColor ??
-                            theme.colorScheme.onError,
-                        fontSize: 10))
+                        child: icon(iconColor),
+                        badgeContent: SabianRobotoText(
+                            item.notificationCounter.toString(),
+                            textColor: sTheme?.onNotificationInfoColor ??
+                                theme.colorScheme.onError,
+                            fontSize: 10))
                     : icon(iconColor)),
             sabianVerticalSpacer(height: 1),
             Center(
                 child: SabianRobotoText(
-                  item.title!,
-                  textColor: textColor,
-                  fontSize: 14,
-                )),
+              item.title!,
+              textColor: textColor,
+              fontSize: 14,
+            )),
           ],
         ));
   }
 
   @protected
   Widget icon(Color? iconColor) {
+    if (item.icon == null) {
+      return const SizedBox(width: 2, height: 2);
+    }
     return SabianIcon(item.icon!,
         iconType: item.iconType ?? ListIconType.system,
         size: 20,

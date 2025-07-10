@@ -12,10 +12,23 @@ class ListModalItem {
   bool circleImageIcons = false;
   Size? iconSize;
 
+
   ListModalItem(this.title) {
     value = title;
     ID = title.hashCode;
   }
+
+  ListModalItem.withAll({
+    required this.title,
+    required this.value,
+    required this.ID,
+    this.icon,
+    this.image,
+    this.iconType = ListIconType.system,
+    this.imageIconType = ListImageIconType.local,
+    this.circleImageIcons = false,
+    this.iconSize,
+  });
 
   ListModalItem.withValue(this.title, {required this.value}) {
     ID = title.hashCode;
@@ -79,6 +92,8 @@ class ListModalItem {
   String toString() {
     return title;
   }
+
+
 }
 
 enum ListIconType {

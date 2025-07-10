@@ -34,6 +34,9 @@ class SabianImage extends StatefulWidget {
 
   final double? height;
 
+
+
+
   const SabianImage(
       {super.key,
       this.url,
@@ -94,6 +97,12 @@ class _SabianImage extends State<SabianImage> {
   }
 
   Widget _getLocalImage(BuildContext context) {
+    if(widget.localImage == null){
+      if (widget.placeholderWidget != null) {
+        return widget.placeholderWidget!.call(context);
+      }
+      return _defaultPlaceholder(context);
+    }
     return Image(
       width: widget.width,
       height: widget.height,

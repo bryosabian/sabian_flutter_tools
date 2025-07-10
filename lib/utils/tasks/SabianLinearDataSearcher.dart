@@ -38,12 +38,12 @@ class SabianLinearDataSearcher<T> {
       this.onCancel,
       this.onBefore,
       this.debounceMilliseconds = 300,
-      this.differentThreadThreshold = 50});
+      this.differentThreadThreshold = 500});
 
   SabianLinearDataSearcher.withOutCallBacks(
       {required this.searchCriteria,
       this.debounceMilliseconds = 0,
-      this.differentThreadThreshold = 0,
+      this.differentThreadThreshold = 500,
       this.onSearched,
       this.onSearchError,
       this.onCancel,
@@ -107,7 +107,7 @@ class SabianLinearDataSearcher<T> {
   }
 
   List<T> directSearch(List<T> content, String query) {
-    return _searchFor<T>(content, query, searchCriteria);
+    return searchContentFor<T>(content, query, searchCriteria);
   }
 
   void _searchAsync(List<T> content, String query) {
@@ -204,22 +204,22 @@ class SabianLinearDataSearcher<T> {
       List<T> searchData = args[0];
       String searchFor = args[1];
       SearchCriteriaCallBack<T> criteriaCallBack = args[2];
-      List<T> searched = _searchFor(searchData, searchFor, criteriaCallBack);
+      List<T> searched = searchContentFor(searchData, searchFor, criteriaCallBack);
       mainPort.send(searched);
     } on Exception catch (e) {
       onSendError(e);
     }
   }
 
-  static List<T> _searchFor<T>(List<T> allContents, String search,
+  static List<T> searchContentFor<T>(List<T> allContents, String search,
       SearchCriteriaCallBack<T> criteriaCallBack,
       {bool growable = false}) {
     return allContents.where((element) {
-      return _isMatch(search, criteriaCallBack.call(element));
+      return hasAnyMatch(search, criteriaCallBack.call(element));
     }).toList(growable: growable);
   }
 
-  static bool _isMatch(String search, List<String?> criteria) {
+  static bool hasAnyMatch(String search, List<String?> criteria) {
     return criteria.any((searchContext) {
       return searchContext.isAMatchByKeyWord(search);
     });

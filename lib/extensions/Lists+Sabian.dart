@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:sabian_tools/structures/SabianException.dart';
 
@@ -31,6 +32,14 @@ extension SabianListModifier<E> on Iterable<E> {
     } on Error {
       return null;
     }
+  }
+}
+
+extension SabianListItemPrimitive<E> on List<E> {
+  E get random {
+    final random = Random();
+    final randomItem = this[random.nextInt(length)];
+    return randomItem;
   }
 }
 

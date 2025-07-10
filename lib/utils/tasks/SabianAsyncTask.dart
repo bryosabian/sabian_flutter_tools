@@ -13,21 +13,22 @@ class SabianAsyncTask<T> {
   SabianAsyncTask(this.action, this.onComplete, this.onError,
       {this.useIsolate = false});
 
-  void execute() async {
+  Future<void> execute() async {
     if (useIsolate) {
-      await Future(() => _executeIsolate());
+      await _executeIsolate();
     } else {
-      _executeFuture();
+      await _executeFuture();
     }
   }
 
-  void _executeFuture() {
+
+  Future<void> _executeFuture() async {
     Future<T>(action).then(onComplete).onError((error, stackTrace) {
       onError(Exception(error), stackTrace);
     });
   }
 
-  void _executeIsolate() async {
+  Future<void> _executeIsolate() async {
     _killIsolate();
     _worker = Worker();
 
@@ -44,7 +45,20 @@ class SabianAsyncTask<T> {
 
         //Error Handler
         errorHandler: (dynamic data) {
-          onError(data as Exception, null);
+          if(data is List){
+            final message = data.map((e) => e.toString()).join(",");
+            onError(Exception(message), null);
+            return;
+          }
+          if(data is Exception){
+            onError(data, null);
+            return;
+          }
+          if(data is Error){
+            onError(Exception(data.toString()), null);
+            return;
+          }
+          onError(Exception("Unknown Error"), null);
         },
 
         //Initial message

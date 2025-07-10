@@ -63,9 +63,10 @@ class _ListModalItemWidget extends State<ListModalItemWidget> {
   }
 
   Widget _getImageIcon(BuildContext context, Size size) {
-    ThemeData theme = Theme.of(context);
-    Color iconErrorColor = theme.colorScheme.error;
-    ListModalItem item = widget.item;
+    final ThemeData theme = Theme.of(context);
+    final ListModalItem item = widget.item;
+    final Color iconErrorColor = theme.colorScheme.onSurface;
+
     Widget imageView;
     BoxFit fit = BoxFit.cover;
     if (item.imageIconType == ListImageIconType.url) {
@@ -77,7 +78,7 @@ class _ListModalItemWidget extends State<ListModalItemWidget> {
                     context: context, parent: widget, theme: Theme.of(context)),
               ),
           errorWidget: (context, url, error) =>
-              Icon(Icons.error, size: size.width, color: iconErrorColor));
+              Icon(item.icon ?? Icons.error, size: size.width, color: iconErrorColor));
     } else {
       imageView = SabianImage(localImage: AssetImage(item.image!), fit: fit);
     }

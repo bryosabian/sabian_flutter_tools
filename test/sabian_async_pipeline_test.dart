@@ -1,4 +1,5 @@
 import 'package:sabian_tools/utils/pipeline/FunctionPipeHandler.dart';
+import 'package:sabian_tools/utils/pipeline/IdentityPipeHandler.dart';
 import 'package:sabian_tools/utils/pipeline/SabianAsyncPipeline.dart';
 import 'package:test/test.dart';
 
@@ -10,28 +11,38 @@ void main() {
 
     // Create the pipeline using FunctionPipeHandler for concise handler definition
     final pipeline = SabianFuturePipeline<int, int>(
+      IdentityAsyncPipeHandler(),
+    ).addHandler(FunctionAsyncPipeHandler((int it) async {
+      final result = it + 1;
+
+      await Future.delayed(delay);
+      // In Dart tests, assertions are typically done with expect() at the end,
+      // but we can keep them here to closely match the Kotlin style for this specific conversion.
+      // However, it's generally better to test the final output.
+      assert(result == 101, "First handler output mismatch");
+      return result;
+    })).addHandler<int>(
       FunctionAsyncPipeHandler((int it) async {
         final result = it + 1;
-
-        await Future.delayed(delay);
         // In Dart tests, assertions are typically done with expect() at the end,
         // but we can keep them here to closely match the Kotlin style for this specific conversion.
         // However, it's generally better to test the final output.
-        assert(result == 101, "First handler output mismatch");
+        await Future.delayed(delay);
+        assert(result == 102, "First handler output mismatch");
         return result;
       }),
     ).addHandler<int>(
       FunctionAsyncPipeHandler((int it) async {
         final next = it + 1;
         await Future.delayed(delay);
-        assert(next == 102, "Second handler output mismatch");
+        assert(next == 103, "Second handler output mismatch");
         return next;
       }),
     ).addHandler<int>(
       FunctionAsyncPipeHandler((int it) async {
         final next = it + 1;
         await Future.delayed(delay);
-        assert(next == 103, "Third handler output mismatch");
+        assert(next == 104, "Third handler output mismatch");
         return next;
       }),
     );
@@ -39,6 +50,6 @@ void main() {
     final finalResult = await pipeline.execute(original);
 
     // The primary assertion for the test
-    expect(finalResult, equals(103));
+    expect(finalResult, equals(104));
   });
 }
